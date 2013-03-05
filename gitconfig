@@ -3,12 +3,17 @@
 	name = Arron Green
 
 [hub]
-protocol = https
+  protocol = https
 
 [credential]
-helper = /opt/boxen/bin/boxen-git-credential
+  helper = /opt/boxen/bin/boxen-git-credential
 
 [core]
-excludesfile = /opt/boxen/config/git/gitignore
+  excludesfile = /opt/boxen/config/git/gitignore
+
 [color]
 	ui = true
+
+[alias]
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=format:\"%C(yellow)%h %C(white)%d%Creset %s %Cblue(%an) %Cred%cr\" --abbrev-commit --all
