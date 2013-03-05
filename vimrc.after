@@ -1,0 +1,101 @@
+"Forget compatibility with Vi. Who cares.
+set nocompatible
+
+"Enable filetypes
+filetype on
+filetype plugin on
+filetype indent on
+syntax on
+
+"Write the old file out when switching between files.
+set autowrite
+
+"Display current cursor position in lower right corner.
+set ruler
+
+"Tab stuff
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+
+"Show command in bottom right portion of the screen
+set showcmd
+
+"Show lines numbers
+set number
+
+"Indent stuff
+set smartindent
+set autoindent
+
+"Always show the status line
+set laststatus=2
+
+"Prefer a slightly higher line height
+set linespace=3
+
+"Better line wrapping 
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+
+"Set incremental searching"
+set incsearch
+
+""Highlight searching
+set hlsearch
+
+" case insensitive search
+set ignorecase
+set smartcase
+
+"Hide MacVim toolbar by default
+set go-=T
+
+"Hard-wrap paragraphs of text
+nnoremap <leader>q gqip
+
+"Enable code folding
+set foldenable
+
+"Hide mouse when typing
+set mousehide
+
+"Faster shortcut for commenting. Requires T-Comment plugin
+map ,c <c-_><c-_>
+
+"Map code completion to , + tab
+imap ,<tab> <C-x><C-o>
+
+"Map escape key to jj -- much faster
+imap jj <esc>
+
+" Source the vimrc file after saving it. This way, you don't have to reload
+" Vim to see the changes.
+if has("autocmd")
+   autocmd bufwritepost .vimrc source $MYVIMRC
+endif
+
+" Scrollbar junk
+set guioptions=aAce
+
+" Colors and fonts
+syntax enable
+let g:solarized_termtrans = 1
+colorscheme solarized
+if has('gui_running')
+  "Using a cool patched font for powerline
+  set guifont=Menlo:h14
+  "set background transparency and solarized style 
+  set background=dark
+  "autopen NERDTree and focus cursor in new document
+  autocmd VimEnter * NERDTree
+  autocmd vimenter * wincmd p
+else
+  set background=dark
+  set mouse=a
+endif
+
+" A fancy status bar
+let g:Powerline_symbols = 'fancy'
