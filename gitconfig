@@ -17,3 +17,19 @@
 [alias]
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=format:\"%C(yellow)%h %C(white)%d%Creset %s %Cblue(%an) %Cred%cr\" --abbrev-commit --all
+
+[merge]
+	tool = diffmerge
+
+[mergetool "diffmerge"]
+	cmd = diffmerge --merge\n--result=$MERGED $LOCAL $BASE $REMOTE
+	trustExitCode = true
+
+[mergetool]
+	keepBackup = false
+
+[diff]
+	tool = diffmerge
+
+[difftool "diffmerge"]
+	cmd = diffmerge $LOCAL $REMOTE
