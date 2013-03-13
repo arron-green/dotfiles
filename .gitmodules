@@ -4,3 +4,6 @@
 [submodule "janus/vim-powerline"]
 	path = janus/vim-powerline
 	url = https://github.com/Lokaltog/vim-powerline
+[submodule "janus/vim-eunuch"]
+	path = janus/vim-eunuch
+	url = https://github.com/tpope/vim-eunuch
