@@ -99,3 +99,6 @@ endif
 
 " A fancy status bar
 let g:Powerline_symbols = 'fancy'
+
+" bang bang bang
+cmap w!! %!sudo tee > /dev/null %
