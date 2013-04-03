@@ -87,7 +87,7 @@ let g:solarized_termtrans = 1
 try
     colorscheme solarized
 catch /^Vim\%((\a\+)\)\=:E185/
-    " set alternative color scheme
+    colorscheme desert
 endtry
 
 if has('gui_running')
