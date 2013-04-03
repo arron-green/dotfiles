@@ -83,7 +83,13 @@ set guioptions=aAce
 " Colors and fonts
 syntax enable
 let g:solarized_termtrans = 1
-colorscheme solarized
+
+try
+    colorscheme solarized
+catch /^Vim\%((\a\+)\)\=:E185/
+    " set alternative color scheme
+endtry
+
 if has('gui_running')
   "Using a cool patched font for powerline
   set guifont=Menlo:h14
