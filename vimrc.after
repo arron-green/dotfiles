@@ -106,5 +106,9 @@ endif
 " A fancy status bar
 let g:Powerline_symbols = 'fancy'
 
+""Alt+j and Alt+k to move between tabs
+nnoremap <A-j> gT
+nnoremap <A-k> gt
+
 " bang bang bang
 cmap w!! %!sudo tee > /dev/null %
