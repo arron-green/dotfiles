@@ -71,6 +71,10 @@ imap ,<tab> <C-x><C-o>
 "Map escape key to jj -- much faster
 imap jj <esc>
 
+"mimic macvim
+imap <D-]> <C-O>:tabn<cr>
+imap <D-[> <C-O>:tabp<cr>
+
 " Source the vimrc file after saving it. This way, you don't have to reload
 " Vim to see the changes.
 if has("autocmd")
@@ -92,6 +96,7 @@ if has('gui_running')
   "autopen NERDTree and focus cursor in new document
   autocmd VimEnter * NERDTree
   autocmd vimenter * wincmd p
+  let NERDTreeShowHidden=1
 else
   set background=dark
   set mouse=a
@@ -99,3 +104,11 @@ endif
 
 " A fancy status bar
 let g:Powerline_symbols = 'fancy'
+
+map <Leader>n :NERDTreeToggle<CR>
+
+" Rspec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
