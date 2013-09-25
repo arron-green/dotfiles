@@ -7,3 +7,6 @@
 [submodule "janus/vim-eunuch"]
 	path = janus/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch
+[submodule "janus/vim-flake8"]
+	path = janus/vim-flake8
+	url = https://github.com/nvie/vim-flake8.git
