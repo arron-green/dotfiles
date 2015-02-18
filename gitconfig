@@ -39,5 +39,5 @@
   default = simple
 
 [grep]
-  extendRegexp = true
-  lineNumber = true
+	extendRegexp = true
+	lineNumber = true
