@@ -14,9 +14,9 @@ set autowrite
 set ruler
 
 "Tab stuff
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 
 "Show command in bottom right portion of the screen
@@ -125,3 +125,8 @@ nnoremap <A-k> gt
 
 " bang bang bang
 cmap w!! %!sudo tee > /dev/null %
+
+let g:jedi#auto_initialization = 0
+
+let g:syntastic_python_checkers = ['flake8', 'pylint']
+autocmd BufRead,BufNewFile *.html setlocal filetype=htmldjango
