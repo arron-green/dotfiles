@@ -1,11 +1,40 @@
-"Forget compatibility with Vi. Who cares.
 set nocompatible
+filetype off
 
-"Enable filetypes
-filetype on
-filetype plugin on
-filetype indent on
-syntax on
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+Plugin 'MarcWeber/vim-addon-mw-utils'
+Plugin 'tpope/vim-fugitive'
+Plugin 'mileszs/ack.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'ervandew/supertab'
+Plugin 'majutsushi/tagbar'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'chrisbra/NrrwRgn'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'vim-scripts/ZoomWin'
+Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'skalnik/vim-vroom'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'bronson/vim-trailing-whitespace'
+Plugin 'powerline/powerline'
+Plugin 'nvie/vim-flake8'
+Plugin 'tpope/vim-eunuch'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tpope/vim-surround'
+Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'vim-scripts/log4j.vim'
+Plugin 'tfnico/vim-gradle'
+call vundle#end()
+
+filetype plugin indent on
 
 "Write the old file out when switching between files.
 set autowrite
@@ -128,5 +157,5 @@ cmap w!! %!sudo tee > /dev/null %
 
 let g:jedi#auto_initialization = 0
 
-let g:syntastic_python_checkers = ['flake8', 'pylint']
+let g:syntastic_python_checkers = ['flake8']
 autocmd BufRead,BufNewFile *.html setlocal filetype=htmldjango

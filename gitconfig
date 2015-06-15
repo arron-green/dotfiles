@@ -1,15 +1,8 @@
 [user]
-  email = arrong@gmail.com
+  email = arron.green@canary.is
   name = Arron Green
 
-[hub]
-  protocol = https
-
-[credential]
-  helper = /opt/boxen/bin/boxen-git-credential
-
 [core]
-  excludesfile = /opt/boxen/config/git/gitignore
   editor = vim
 
 [color]
@@ -39,5 +32,5 @@
   default = simple
 
 [grep]
-	extendRegexp = true
-	lineNumber = true
+  extendRegexp = true
+  lineNumber = true
