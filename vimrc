@@ -1,9 +1,15 @@
-set nocompatible
-filetype off
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
+" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
 Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tpope/vim-fugitive'
 Plugin 'mileszs/ack.vim'
@@ -32,9 +38,18 @@ Plugin 'tpope/vim-surround'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'vim-scripts/log4j.vim'
 Plugin 'tfnico/vim-gradle'
-call vundle#end()
+Plugin 'Glench/Vim-Jinja2-Syntax'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'drmingdrmer/xptemplate'
+Plugin 'gurpreetatwal/vim-avro'
+Plugin 'GEverding/vim-hocon'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'tpope/vim-jdaddy'
 
-filetype plugin indent on
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 "Write the old file out when switching between files.
 set autowrite
@@ -42,11 +57,28 @@ set autowrite
 "Display current cursor position in lower right corner.
 set ruler
 
+" if (&ft=='yaml')
+"     autocmd BufRead,BufNewFile *.yml setlocal tabstop=2
+"     autocmd BufRead,BufNewFile *.yml setlocal shiftwidth=2
+"     autocmd BufRead,BufNewFile *.yml setlocal softtabstop=2
+" else
+"     "Tab stuff
+"     set tabstop=4
+"     set shiftwidth=4
+"     set softtabstop=4
+"     set expandtab
+" endif
+
 "Tab stuff
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
+
+autocmd BufRead,BufNewFile *.yml setlocal tabstop=2
+autocmd BufRead,BufNewFile *.yml setlocal shiftwidth=2
+autocmd BufRead,BufNewFile *.yml setlocal softtabstop=2
+au FileType yaml setl sw=2 sts=2 et
 
 "Show command in bottom right portion of the screen
 set showcmd
@@ -123,24 +155,12 @@ catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme desert
 endtry
 
-if has('gui_running')
-  "Using a cool patched font for powerline
-  set guifont=Menlo:h14
-  "set background transparency and solarized style 
-  set background=dark
-  "autopen NERDTree and focus cursor in new document
-  autocmd VimEnter * NERDTree
-  autocmd vimenter * wincmd p
-  let NERDTreeShowHidden=1
-else
-  set background=dark
-  set mouse=a
-endif
-
 " A fancy status bar
 let g:Powerline_symbols = 'fancy'
 
 map <Leader>n :NERDTreeToggle<CR>
+if has('gui_running')
+endif
 
 " Rspec.vim mappings
 map <Leader>t :call RunCurrentSpecFile()<CR>
@@ -159,3 +179,75 @@ let g:jedi#auto_initialization = 0
 
 let g:syntastic_python_checkers = ['flake8']
 autocmd BufRead,BufNewFile *.html setlocal filetype=htmldjango
+autocmd BufRead,BufNewFile *.json.j2 setlocal filetype=json
+
+" ignore specific files
+let NERDTreeIgnore = ['\.pyc$', '\.swp$']
+
+function! StartUp()
+    if has('gui_running')
+      "Using a cool patched font for powerline
+      set guifont=Menlo:h14
+      "set background transparency and solarized style
+      set background=dark
+
+      if 0 == argc()
+          NERDTree ~/dev
+      else
+          if argv(0) == '.'
+              " execute 'NERDTree' getcwd()
+              execute 'NERDTreeToggle'
+
+              "autopen NERDTree and focus cursor in new document
+              autocmd VimEnter * NERDTree
+              autocmd vimenter * wincmd p
+              let NERDTreeShowHidden=1
+          else
+              execute 'NERDTree' getcwd() . '/' . argv(0)
+          endif
+      endif
+
+    else
+      set background=dark
+      set mouse=a
+    endif
+endfunction
+
+autocmd VimEnter * call StartUp()
+autocmd VimEnter * wincmd p
+
+augroup myvimrc
+    au!
+    au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
+augroup END
+
+function Add(list, item)
+   call add(a:list, a:item)
+   return a:item
+endfunction
+
+" Rainbow parentheses
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+" au VimEnter * RainbowParenthesesToggle
+" au Syntax * RainbowParenthesesLoadRound
+" au Syntax * RainbowParenthesesLoadSquare
+" au Syntax * RainbowParenthesesLoadBraces
