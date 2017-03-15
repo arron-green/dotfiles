@@ -50,6 +50,7 @@ export PROMPT_COMMAND=ps1-prompt
 
 # tab completion
 [[ -f ~/.git-completion.bash ]] && source ~/.git-completion.bash
+[[ -f /usr/local/etc/bash_completion ]] && source /usr/local/etc/bash_completion
 [[ -f ~/.git-prompt.sh ]] && source ~/.git-prompt.sh
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" scp
@@ -123,6 +124,13 @@ function docker-init {
       fi
       docker-machine env $NAME
       # eval "$(docker-machine env $NAME)"
+  fi
+}
+
+function epoch-to-human {
+  EPOCH="$1"
+  if [ ! -z $EPOCH ]; then
+      gdate -d @$EPOCH +'%F %r %Z'
   fi
 }
 
@@ -228,9 +236,10 @@ export SCALA_HOME="$(find-scala-home)"
 export CONSCRIPT_HOME="$HOME/.conscript"
 export PATH="$HOME/.bin:$HOME/.avrohugger-tools/bin:/usr/local/sbin:/usr/local/opt/openssl/bin:$PATH"
 
-export LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/include"
+export LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/lib -L/usr/local/opt/openldap/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I/usr/local/include"
 export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
+
 # export LDFLAGS=-L/usr/local/opt/readline/lib
 # export CPPFLAGS=-I/usr/local/opt/readline/include
 
