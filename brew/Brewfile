@@ -18,7 +18,7 @@ brew 'lua'
 
 # development tools
 cask 'macvim'
-cask 'intellij-idea'
+cask 'intellij-idea-ce'
 cask 'sublime-text'
 brew 'docker'
 brew 'docker-compose'
