@@ -1,7 +1,9 @@
 set -o vi
 
+if [ ! -d ~/.virtualenvs ]; then
+    export WORKON_HOME="~/.virtualenvs"
+fi
 type -p virtualenvwrapper.sh > /dev/null 2>&1 && source $(type -p virtualenvwrapper.sh)
-[[ -e ~/.cnry-aws/helper-functions.sh ]] && source ~/.cnry-aws/helper-functions.sh
 
 # adds color to my terminal
 export TERM=xterm-color
@@ -49,9 +51,9 @@ function ps1-prompt() {
 export PROMPT_COMMAND=ps1-prompt
 
 # tab completion
-[[ -f ~/.git-completion.bash ]] && source ~/.git-completion.bash
-[[ -f /usr/local/etc/bash_completion ]] && source /usr/local/etc/bash_completion
-[[ -f ~/.git-prompt.sh ]] && source ~/.git-prompt.sh
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+   . $(brew --prefix)/etc/bash_completion
+fi
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" scp
 type -p aws_completer > /dev/null 2>&1 && complete -C "$(type -p aws_completer)" aws
@@ -149,7 +151,7 @@ function aws-terminate-instance-by-id {
 }
 
 function aws-reset-password {
-  USERNAME="${1-agreen}"
+  USERNAME="${1}"
   read -s -p "Password: " PASS
   if [ ! -z $PASS ]; then
       aws iam update-login-profile --user-name $USERNAME --password $PASS
@@ -159,7 +161,7 @@ function aws-reset-password {
           echo "Error\! update-login-profile returned non zero status"
       fi
   else
-      echo "Usage: $0 '[password]' '[username-agreen]'"
+      echo "Usage: $0 '[password]' '[username]'"
   fi
 }
 
@@ -227,18 +229,19 @@ function aws-disable-mfa {
 }
 
 function aws-enable-mfa {
-    USER=${1-agreen}
+    USER=${1}
     SERIAL_NUM=$(aws iam list-virtual-mfa-devices | jq -rc ".VirtualMFADevices | map(select(.SerialNumber | contains(\"$USER\"))) | .[] .SerialNumber")
 }
 
 export JAVA_HOME=`/usr/libexec/java_home`
 export SCALA_HOME="$(find-scala-home)"
-export CONSCRIPT_HOME="$HOME/.conscript"
-export PATH="$HOME/.bin:$HOME/.avrohugger-tools/bin:/usr/local/sbin:/usr/local/opt/openssl/bin:$PATH"
+# export CONSCRIPT_HOME="$HOME/.conscript"
+export PATH="$HOME/.bin:/usr/local/sbin:$PATH"
+# export PATH="$PATH:/usr/local/opt/openssl/bin"
 
-export LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/lib -L/usr/local/opt/openldap/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I/usr/local/include"
-export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
+# export LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/lib -L/usr/local/opt/openldap/lib"
+# export CPPFLAGS="-I/usr/local/opt/openssl/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I/usr/local/include"
+# export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
 
 # export LDFLAGS=-L/usr/local/opt/readline/lib
 # export CPPFLAGS=-I/usr/local/opt/readline/include
