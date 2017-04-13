@@ -51,6 +51,7 @@ mas 'status-clock', id: 552792489
 mas 'slack', id: 803453959
 mas 'divvy-window-manager', id: 413857545
 mas 'yubikey-personalization-tool', id: 638161122
+mas 'amphetamine', id: 937984704
 
 brew 'ack'
 brew 'autoconf'
