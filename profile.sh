@@ -1,5 +1,3 @@
-set -o vi
-
 if [ ! -d ~/.virtualenvs ]; then
     export WORKON_HOME="~/.virtualenvs"
 fi
@@ -26,7 +24,7 @@ export COLOR_CYAN='\[\033[36m\]'
 
 function ps1-prompt() {
     # current working directory
-    PREFIX="${COLOR_GREEN}\W${COLOR_NIL}"
+    PS1_PREFIX="${COLOR_GREEN}\W${COLOR_NIL}"
 
     # git info
     export GIT_PS1_SHOWCOLORHINTS=true
@@ -46,7 +44,7 @@ function ps1-prompt() {
     [[ ! -z $VIRTUAL_ENV ]] && VENV=" [${COLOR_BLUE}V${COLOR_NIL}]"
 
     END="${COLOR_BLUE}\$${COLOR_NIL} "
-    export PS1="${PREFIX}${VENV}${GIT} ${END}"
+    export PS1="${PS1_PREFIX}${VENV}${GIT} ${END}"
 }
 export PROMPT_COMMAND=ps1-prompt
 
@@ -235,16 +233,35 @@ function aws-enable-mfa {
 
 export JAVA_HOME=`/usr/libexec/java_home`
 export SCALA_HOME="$(find-scala-home)"
-# export CONSCRIPT_HOME="$HOME/.conscript"
 export PATH="$HOME/.bin:/usr/local/sbin:$PATH"
-# export PATH="$PATH:/usr/local/opt/openssl/bin"
+
+if [[ -d $HOME/.conscript ]]; then
+    export CONSCRIPT_HOME="$HOME/.conscript"
+    export PATH="$PATH:$HOME/.conscript/bin"
+fi
+
+export PATH="/usr/local/opt/openssl/bin:$PATH"
 
 # export LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/lib -L/usr/local/opt/openldap/lib"
 # export CPPFLAGS="-I/usr/local/opt/openssl/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I/usr/local/include"
 # export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
 
+# NOTE: required to compile rust-openssl
+export OPENSSL_INCLUDE_DIR="/usr/local/opt/openssl/include"
+export DEP_OPENSSL_INCLUDE="$OPENSSL_INCLUDE_DIR"
+
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I$OPENSSL_INCLUDE_DIR"
+export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+
 # export LDFLAGS=-L/usr/local/opt/readline/lib
 # export CPPFLAGS=-I/usr/local/opt/readline/include
+
+# nodejs specific
+export NVM_DIR="$HOME/.nvm"
+[[ -d $NVM_DIR ]] || echo mkdir -p $NVM_DIR
+
+source "$(brew --prefix)/opt/nvm/nvm.sh"
 
 alias "certs-show-csr"='openssl req -noout -text -in '
 alias "certs-show-key"='openssl rsa -noout -text -in '
