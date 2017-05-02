@@ -1,73 +1,92 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
+set nocompatible
+filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
+" required
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tpope/vim-fugitive'
+" essentials
 Plugin 'mileszs/ack.vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'ervandew/supertab'
 Plugin 'majutsushi/tagbar'
+Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 Plugin 'Lokaltog/vim-easymotion'
 Plugin 'chrisbra/NrrwRgn'
-Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-scripts/ZoomWin'
 Plugin 'jeetsukumaran/vim-buffergator'
-Plugin 'skalnik/vim-vroom'
-Plugin 'terryma/vim-multiple-cursors'
 Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'powerline/powerline'
-Plugin 'nvie/vim-flake8'
 Plugin 'tpope/vim-eunuch'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-surround'
-Plugin 'jistr/vim-nerdtree-tabs'
+
+" tab completion
+Plugin 'ervandew/supertab'
+
+" comments
+Plugin 'tomtom/tcomment_vim'
+map ,c <c-_><c-_>
+
+" fuzzy search
+Plugin 'ctrlpvim/ctrlp.vim'
+
+" git
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+
+" colors
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'ajh17/Spacegray.vim'
+
+" jvm
 Plugin 'vim-scripts/log4j.vim'
 Plugin 'tfnico/vim-gradle'
-Plugin 'Glench/Vim-Jinja2-Syntax'
 Plugin 'derekwyatt/vim-scala'
-Plugin 'drmingdrmer/xptemplate'
 Plugin 'gurpreetatwal/vim-avro'
 Plugin 'GEverding/vim-hocon'
-Plugin 'kien/rainbow_parentheses.vim'
+
+" javascript/json
+Plugin 'moll/vim-node'
 Plugin 'tpope/vim-jdaddy'
+Plugin 'leshill/vim-json'
+Plugin 'pangloss/vim-javascript'
+let g:javascript_plugin_flow = 1
+Plugin 'mxw/vim-jsx'
+let g:jsx_ext_required = 0
+Plugin 'leafgarland/typescript-vim'
+Plugin 'peitalin/vim-jsx-typescript'
 
+" python
+Plugin 'Glench/Vim-Jinja2-Syntax'
+Plugin 'nvie/vim-flake8'
 
-" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+" powerline specific
+" seems to work best with macvim/gvim
+" NOTE: this could also be thrown into .gvimrc
+if has('gui_running')
+    Bundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+    set guifont=Meslo\ LG\ M\ for\ Powerline:h15
+    " set guifont=Inconsolata\ for\ Powerline:h15
+    let g:Powerline_symbols = 'fancy'
+    set encoding=utf-8
+    set t_Co=256
+    set fillchars+=stl:\ ,stlnc:\
+    set term=xterm-256color
+    set termencoding=utf-8
+endif
 
 "Write the old file out when switching between files.
 set autowrite
 
 "Display current cursor position in lower right corner.
 set ruler
-
-" if (&ft=='yaml')
-"     autocmd BufRead,BufNewFile *.yml setlocal tabstop=2
-"     autocmd BufRead,BufNewFile *.yml setlocal shiftwidth=2
-"     autocmd BufRead,BufNewFile *.yml setlocal softtabstop=2
-" else
-"     "Tab stuff
-"     set tabstop=4
-"     set shiftwidth=4
-"     set softtabstop=4
-"     set expandtab
-" endif
 
 "Tab stuff
 set tabstop=4
@@ -80,36 +99,24 @@ autocmd BufRead,BufNewFile *.yml setlocal shiftwidth=2
 autocmd BufRead,BufNewFile *.yml setlocal softtabstop=2
 au FileType yaml setl sw=2 sts=2 et
 
-"Show command in bottom right portion of the screen
 set showcmd
-
-"Show lines numbers
 set number
-
-"Indent stuff
 set smartindent
 set autoindent
-
-"Always show the status line
 set laststatus=2
-
-"Prefer a slightly higher line height
 set linespace=3
-
-"Better line wrapping 
 set wrap
 set textwidth=79
 set formatoptions=qrn1
+set hlsearch
+set ignorecase
+set smartcase
+set foldenable
+set mousehide
+set guioptions=aAce
 
 "Set incremental searching"
 set incsearch
-
-""Highlight searching
-set hlsearch
-
-" case insensitive search
-set ignorecase
-set smartcase
 
 "Hide MacVim toolbar by default
 set go-=T
@@ -117,24 +124,19 @@ set go-=T
 "Hard-wrap paragraphs of text
 nnoremap <leader>q gqip
 
-"Enable code folding
-set foldenable
-
-"Hide mouse when typing
-set mousehide
-
-"Faster shortcut for commenting. Requires T-Comment plugin
-map ,c <c-_><c-_>
-
-"Map code completion to , + tab
+"Code completion
 imap ,<tab> <C-x><C-o>
 
-"Map escape key to jj -- much faster
+"Escape
 imap jj <esc>
 
 "mimic macvim
 imap <D-]> <C-O>:tabn<cr>
 imap <D-[> <C-O>:tabp<cr>
+
+""Alt+j and Alt+k to move between tabs
+nnoremap <A-j> gT
+nnoremap <A-k> gt
 
 " Source the vimrc file after saving it. This way, you don't have to reload
 " Vim to see the changes.
@@ -142,37 +144,17 @@ if has("autocmd")
    autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
-" Scrollbar junk
-set guioptions=aAce
-
-" Colors and fonts
 syntax enable
 let g:solarized_termtrans = 1
 
+set background=dark
 try
     colorscheme solarized
 catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme desert
 endtry
 
-" A fancy status bar
-let g:Powerline_symbols = 'fancy'
-
-map <Leader>n :NERDTreeToggle<CR>
-if has('gui_running')
-endif
-
-" Rspec.vim mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
-map <Leader>s :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
-
-""Alt+j and Alt+k to move between tabs
-nnoremap <A-j> gT
-nnoremap <A-k> gt
-
-" bang bang bang
+" sudo trick
 cmap w!! %!sudo tee > /dev/null %
 
 let g:jedi#auto_initialization = 0
@@ -181,35 +163,29 @@ let g:syntastic_python_checkers = ['flake8']
 autocmd BufRead,BufNewFile *.html setlocal filetype=htmldjango
 autocmd BufRead,BufNewFile *.json.j2 setlocal filetype=json
 
-" ignore specific files
+" nerdtree
 let NERDTreeIgnore = ['\.pyc$', '\.swp$']
+map <Leader>n :NERDTreeToggle<CR>
 
 function! StartUp()
     if has('gui_running')
-      "Using a cool patched font for powerline
-      set guifont=Menlo:h14
-      "set background transparency and solarized style
-      set background=dark
+        if 0 == argc()
+            NERDTree ~/dev
+        else
+            if argv(0) == '.'
+                " execute 'NERDTree' getcwd()
+                execute 'NERDTreeToggle'
 
-      if 0 == argc()
-          NERDTree ~/dev
-      else
-          if argv(0) == '.'
-              " execute 'NERDTree' getcwd()
-              execute 'NERDTreeToggle'
-
-              "autopen NERDTree and focus cursor in new document
-              autocmd VimEnter * NERDTree
-              autocmd vimenter * wincmd p
-              let NERDTreeShowHidden=1
-          else
-              execute 'NERDTree' getcwd() . '/' . argv(0)
-          endif
-      endif
-
+                "autopen NERDTree and focus cursor in new document
+                autocmd VimEnter * NERDTree
+                autocmd vimenter * wincmd p
+                let NERDTreeShowHidden=1
+            else
+                execute 'NERDTree' getcwd() . '/' . argv(0)
+            endif
+        endif
     else
-      set background=dark
-      set mouse=a
+        set mouse=a
     endif
 endfunction
 
@@ -222,32 +198,7 @@ augroup myvimrc
 augroup END
 
 function Add(list, item)
-   call add(a:list, a:item)
-   return a:item
+    call add(a:list, a:item)
+    return a:item
 endfunction
 
-" Rainbow parentheses
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['black',       'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-" au VimEnter * RainbowParenthesesToggle
-" au Syntax * RainbowParenthesesLoadRound
-" au Syntax * RainbowParenthesesLoadSquare
-" au Syntax * RainbowParenthesesLoadBraces
