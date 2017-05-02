@@ -7,6 +7,7 @@ brew 'bash'
 brew 'bash-completion'
 brew 'bash-git-prompt'
 brew 'jq'
+cask 'private-internet-access'
 
 # languages
 cask 'java'
@@ -15,22 +16,26 @@ brew 'python'
 brew 'golang'
 brew 'node'
 brew 'lua'
+brew 'rust'
 
 # development tools
-cask 'macvim'
 cask 'intellij-idea-ce'
 cask 'sublime-text'
 brew 'docker'
 brew 'docker-compose'
 brew 'docker-machine'
+mas 'Xcode', id: 497799835
+brew 'macvim'
 
 # build tools
 brew 'sbt'
 brew 'maven'
 brew 'gradle'
 brew 'leiningen'
+brew 'bazel'
 
 # language extras
+brew 'giter8'
 brew 'zinc'
 brew 'nailgun'
 cask 'ammonite'
@@ -66,7 +71,6 @@ brew 'freetype'
 brew 'gawk'
 brew 'gcc'
 brew 'gdbm'
-brew 'gettext'
 brew 'glib'
 brew 'gmp'
 brew 'gnu-getopt'
@@ -119,3 +123,10 @@ brew 'xvid'
 brew 'xz'
 brew 'yasm'
 
+# ARM build tools
+brew 'crosstool-ng'
+brew 'gettext'
+
+# Services
+brew 'mysql'
+brew 'redis@2.8'
