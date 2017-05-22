@@ -48,6 +48,7 @@ Plugin 'tfnico/vim-gradle'
 Plugin 'derekwyatt/vim-scala'
 Plugin 'gurpreetatwal/vim-avro'
 Plugin 'GEverding/vim-hocon'
+Plugin 'neo4j-contrib/cypher-vim-syntax'
 
 " javascript/json
 Plugin 'moll/vim-node'
@@ -63,6 +64,10 @@ Plugin 'peitalin/vim-jsx-typescript'
 " python
 Plugin 'Glench/Vim-Jinja2-Syntax'
 Plugin 'nvie/vim-flake8'
+
+" build tools
+Plugin 'google/vim-maktaba'
+Plugin 'bazelbuild/vim-bazel'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -164,7 +169,7 @@ autocmd BufRead,BufNewFile *.html setlocal filetype=htmldjango
 autocmd BufRead,BufNewFile *.json.j2 setlocal filetype=json
 
 " nerdtree
-let NERDTreeIgnore = ['\.pyc$', '\.swp$']
+let NERDTreeIgnore = ['\.pyc$', '\.swp$', '^bazel\-.*']
 map <Leader>n :NERDTreeToggle<CR>
 
 function! StartUp()
