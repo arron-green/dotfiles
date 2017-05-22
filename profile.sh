@@ -254,6 +254,11 @@ export LDFLAGS="-L/usr/local/opt/openssl/lib"
 export CPPFLAGS="-I$OPENSSL_INCLUDE_DIR"
 export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
 
+# ZEPPELIN SPECIFIC
+if [[ -d $HOME/.zeppelin-conf ]]; then
+    export ZEPPELIN_CONF_DIR="$HOME/.zeppelin-conf"
+fi
+
 # export LDFLAGS=-L/usr/local/opt/readline/lib
 # export CPPFLAGS=-I/usr/local/opt/readline/include
 
