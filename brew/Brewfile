@@ -13,6 +13,7 @@ cask 'private-internet-access'
 cask 'java'
 brew 'scala@2.11'
 brew 'python'
+brew 'python3'
 brew 'golang'
 brew 'node'
 brew 'lua'
@@ -49,6 +50,7 @@ cask 'dropbox'
 cask 'vagrant'
 cask 'virtualbox'
 cask 'diffmerge'
+cask 'screenhero'
 
 # etc
 mas '1password-password-manager-and-secure-wallet', id: 443987910
