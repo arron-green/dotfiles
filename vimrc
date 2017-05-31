@@ -40,6 +40,7 @@ Plugin 'airblade/vim-gitgutter'
 
 " colors
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'lifepillar/vim-solarized8'
 Plugin 'ajh17/Spacegray.vim'
 
 " jvm
@@ -51,6 +52,7 @@ Plugin 'GEverding/vim-hocon'
 Plugin 'neo4j-contrib/cypher-vim-syntax'
 
 " javascript/json
+Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'moll/vim-node'
 Plugin 'tpope/vim-jdaddy'
 Plugin 'leshill/vim-json'
@@ -154,7 +156,11 @@ let g:solarized_termtrans = 1
 
 set background=dark
 try
-    colorscheme solarized
+    " colorscheme solarized
+    " colorscheme solarized8_dark
+    " colorscheme solarized8_dark_low
+    colorscheme solarized8_dark_high
+    " colorscheme solarized8_dark_flat
 catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme desert
 endtry
@@ -169,7 +175,7 @@ autocmd BufRead,BufNewFile *.html setlocal filetype=htmldjango
 autocmd BufRead,BufNewFile *.json.j2 setlocal filetype=json
 
 " nerdtree
-let NERDTreeIgnore = ['\.pyc$', '\.swp$', '^bazel\-.*']
+let NERDTreeIgnore = ['^\.DS_Store$', '\.pyc$', '\.swp$', '^bazel\-.*']
 map <Leader>n :NERDTreeToggle<CR>
 
 function! StartUp()
