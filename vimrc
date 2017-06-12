@@ -101,6 +101,12 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
+autocmd BufRead,BufNewFile *.js setlocal tabstop=2
+autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2
+autocmd BufRead,BufNewFile *.js setlocal softtabstop=2
+au FileType javascript setl sw=2 sts=2 et
+au FileType javascript.jsx setl sw=2 sts=2 et
+
 autocmd BufRead,BufNewFile *.yml setlocal tabstop=2
 autocmd BufRead,BufNewFile *.yml setlocal shiftwidth=2
 autocmd BufRead,BufNewFile *.yml setlocal softtabstop=2
