@@ -232,7 +232,14 @@ function aws-enable-mfa {
 }
 
 export JAVA_HOME=`/usr/libexec/java_home`
-export SCALA_HOME="$(find-scala-home)"
+
+# default to scala 2.11
+BREW_SCALA_HOME="$(brew --prefix)/opt/scala@2.11"
+if [[ -d "${BREW_SCALA_HOME}/bin" ]]; then
+    export PATH="${BREW_SCALA_HOME}/bin:$PATH"
+    export SCALA_HOME="$(find-scala-home)"
+fi
+
 export PATH="$HOME/.bin:/usr/local/sbin:$PATH"
 
 if [[ -d $HOME/.conscript ]]; then
@@ -263,10 +270,12 @@ fi
 # export CPPFLAGS=-I/usr/local/opt/readline/include
 
 # nodejs specific
-export NVM_DIR="$HOME/.nvm"
-[[ -d $NVM_DIR ]] || echo mkdir -p $NVM_DIR
+export BREW_NVM_HOME="$(brew --prefix)/opt/nvm"
+if [[ -d $BREW_NVM_HOME ]]; then
+    [[ -d "$HOME/.nvm" ]] || echo mkdir -p "$HOME/.nvm"
+    source "$BREW_NVM_HOME/nvm.sh"
+fi
 
-source "$(brew --prefix)/opt/nvm/nvm.sh"
 
 alias "certs-show-csr"='openssl req -noout -text -in '
 alias "certs-show-key"='openssl rsa -noout -text -in '
