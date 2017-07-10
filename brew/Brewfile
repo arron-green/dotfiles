@@ -15,7 +15,7 @@ brew 'scala@2.11'
 brew 'python'
 brew 'python3'
 brew 'golang'
-brew 'node'
+brew 'nvm'
 brew 'lua'
 brew 'rust'
 
