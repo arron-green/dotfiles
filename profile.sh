@@ -135,6 +135,18 @@ function epoch-to-human {
 }
 
 #AWS specific
+function aws-profiles {
+    CREDS=$HOME/.aws/credentials
+    if [ -e $CREDS ]; then
+        while read PROFILE; do
+            echo export AWS_PROFILE=$PROFILE
+        done < <(ack '\[(?<p>.+)\]' $CREDS --output '$+{p}')
+    else
+        echo "$CREDS does not exist"
+        return 1
+    fi
+}
+
 function aws-log-groups {
     aws logs describe-log-groups | jq -r -c '.logGroups[] .logGroupName'
 }
@@ -272,7 +284,8 @@ fi
 # nodejs specific
 export BREW_NVM_HOME="$(brew --prefix)/opt/nvm"
 if [[ -d $BREW_NVM_HOME ]]; then
-    [[ -d "$HOME/.nvm" ]] || echo mkdir -p "$HOME/.nvm"
+    export NVM_DIR="$HOME/.nvm"
+    [[ -d "$NVM_DIR" ]] || mkdir -p "$NVM_DIR"
     source "$BREW_NVM_HOME/nvm.sh"
 fi
 
@@ -288,3 +301,6 @@ alias urlencode='python -c "import sys, urllib as ul; \
 alias gpg='gpg1'
 alias stripcolors='gsed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
+export DOCKER_HOST=192.168.99.100
+export KINESIS_HOST=${DOCKER_HOST}
+export DYNAMODB_HOST=${DOCKER_HOST}
