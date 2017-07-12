@@ -7,7 +7,9 @@ brew 'bash'
 brew 'bash-completion'
 brew 'bash-git-prompt'
 brew 'jq'
+brew 'gpg'
 cask 'private-internet-access'
+cask 'keybase'
 
 # languages
 cask 'java'
