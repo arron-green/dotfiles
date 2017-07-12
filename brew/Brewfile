@@ -28,6 +28,7 @@ brew 'docker'
 brew 'docker-compose'
 brew 'docker-machine'
 mas 'Xcode', id: 497799835
+brew 'vim'
 brew 'macvim'
 brew 'heroku-toolbelt'
 

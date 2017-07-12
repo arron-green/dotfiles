@@ -298,7 +298,6 @@ alias urldecode='python -c "import sys, urllib as ul; \
   print ul.unquote_plus(sys.argv[1])"'
 alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
-alias gpg='gpg1'
 alias stripcolors='gsed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
 export DOCKER_HOST=192.168.99.100
