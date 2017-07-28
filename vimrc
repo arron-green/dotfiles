@@ -62,6 +62,8 @@ Plugin 'mxw/vim-jsx'
 let g:jsx_ext_required = 0
 Plugin 'leafgarland/typescript-vim'
 Plugin 'peitalin/vim-jsx-typescript'
+Plugin 'raichoo/purescript-vim'
+Plugin 'FrigoEU/psc-ide-vim'
 
 " python
 Plugin 'Glench/Vim-Jinja2-Syntax'
