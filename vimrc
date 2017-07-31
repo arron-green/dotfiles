@@ -1,86 +1,90 @@
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" required
-Plugin 'gmarik/Vundle.vim'
-
+call plug#begin('~/.vim/vimplug-plugins')
 " essentials
-Plugin 'mileszs/ack.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'majutsushi/tagbar'
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'chrisbra/NrrwRgn'
-Plugin 'vim-scripts/ZoomWin'
-Plugin 'jeetsukumaran/vim-buffergator'
-Plugin 'bronson/vim-trailing-whitespace'
-Plugin 'tpope/vim-eunuch'
-Plugin 'tpope/vim-surround'
+Plug 'mileszs/ack.vim'
+Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdtree'
+Plug 'jistr/vim-nerdtree-tabs'
+Plug 'tpope/vim-unimpaired'
+Plug 'majutsushi/tagbar'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'chrisbra/NrrwRgn'
+Plug 'vim-scripts/ZoomWin'
+Plug 'jeetsukumaran/vim-buffergator'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-surround'
 
 " tab completion
-Plugin 'ervandew/supertab'
+Plug 'ervandew/supertab'
 
 " comments
-Plugin 'tomtom/tcomment_vim'
-map ,c <c-_><c-_>
+Plug 'tomtom/tcomment_vim'
 
 " fuzzy search
-Plugin 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " git
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 " colors
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'lifepillar/vim-solarized8'
-Plugin 'ajh17/Spacegray.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'lifepillar/vim-solarized8'
+Plug 'ajh17/Spacegray.vim'
 
 " jvm
-Plugin 'vim-scripts/log4j.vim'
-Plugin 'tfnico/vim-gradle'
-Plugin 'derekwyatt/vim-scala'
-Plugin 'gurpreetatwal/vim-avro'
-Plugin 'GEverding/vim-hocon'
-Plugin 'neo4j-contrib/cypher-vim-syntax'
+Plug 'vim-scripts/log4j.vim'
+Plug 'tfnico/vim-gradle'
+Plug 'derekwyatt/vim-scala'
+Plug 'gurpreetatwal/vim-avro'
+Plug 'GEverding/vim-hocon'
+Plug 'neo4j-contrib/cypher-vim-syntax'
 
 " javascript/json
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'moll/vim-node'
-Plugin 'tpope/vim-jdaddy'
-Plugin 'leshill/vim-json'
-Plugin 'pangloss/vim-javascript'
-let g:javascript_plugin_flow = 1
-Plugin 'mxw/vim-jsx'
-let g:jsx_ext_required = 0
-Plugin 'leafgarland/typescript-vim'
-Plugin 'peitalin/vim-jsx-typescript'
-Plugin 'raichoo/purescript-vim'
-Plugin 'FrigoEU/psc-ide-vim'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'moll/vim-node'
+Plug 'tpope/vim-jdaddy'
+Plug 'leshill/vim-json'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'raichoo/purescript-vim'
+Plug 'FrigoEU/psc-ide-vim'
 
 " python
-Plugin 'Glench/Vim-Jinja2-Syntax'
-Plugin 'nvie/vim-flake8'
+Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'nvie/vim-flake8'
 
 " build tools
-Plugin 'google/vim-maktaba'
-Plugin 'bazelbuild/vim-bazel'
+Plug 'google/vim-maktaba'
+Plug 'bazelbuild/vim-bazel'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()
+
+syntax on
+syntax enable
+
+filetype on
+filetype plugin indent on
+
+set nocompatible
+
+" comments
+map ,c <c-_><c-_>
+
+" javascript/json
+let g:javascript_plugin_flow = 1
+let g:jsx_ext_required = 0
 
 " powerline specific
 " seems to work best with macvim/gvim
 " NOTE: this could also be thrown into .gvimrc
 if has('gui_running')
-    Bundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
+    Plug 'powerline/powerline', { 'rtp': 'powerline/bindings/vim/' }
     set guifont=Meslo\ LG\ M\ for\ Powerline:h15
     " set guifont=Inconsolata\ for\ Powerline:h15
     let g:Powerline_symbols = 'fancy'
@@ -141,6 +145,7 @@ nnoremap <leader>q gqip
 
 "Code completion
 imap ,<tab> <C-x><C-o>
+set omnifunc=syntaxcomplete#Complete
 
 "Escape
 imap jj <esc>
@@ -149,17 +154,12 @@ imap jj <esc>
 imap <D-]> <C-O>:tabn<cr>
 imap <D-[> <C-O>:tabp<cr>
 
-""Alt+j and Alt+k to move between tabs
-nnoremap <A-j> gT
-nnoremap <A-k> gt
-
 " Source the vimrc file after saving it. This way, you don't have to reload
 " Vim to see the changes.
 if has("autocmd")
    autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
-syntax enable
 let g:solarized_termtrans = 1
 
 set background=dark

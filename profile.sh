@@ -1,8 +1,3 @@
-if [ ! -d ~/.virtualenvs ]; then
-    export WORKON_HOME="~/.virtualenvs"
-fi
-type -p virtualenvwrapper.sh > /dev/null 2>&1 && source $(type -p virtualenvwrapper.sh)
-
 # adds color to my terminal
 export TERM=xterm-color
 export GREP_OPTIONS='--color=auto' GREP_COLOR='1;32'
@@ -100,6 +95,12 @@ function git-branch-cp {
     if [ "$?" == "0" ]; then
         echo "$BN" | tr -d '\n' | pbcopy
     fi
+}
+
+function pip-remove-globals {
+    while read P; do
+        pip uninstall -y $P;
+    done < <(pip list --format=json | jq -rc '.[] .name' | egrep -v 'pip|setuptools|wheel|six')
 }
 
 function notify {
@@ -300,6 +301,12 @@ alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
 alias stripcolors='gsed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
-export DOCKER_HOST=192.168.99.100
-export KINESIS_HOST=${DOCKER_HOST}
-export DYNAMODB_HOST=${DOCKER_HOST}
+if [[ -f $HOME/.secrets/exports ]]; then
+    source $HOME/.secrets/exports
+fi
+
+# python pyenv specific
+if type -p pyenv > /dev/null 2>&1; then
+    eval "$(pyenv init -)"
+    type -p pyenv-virtualenv-init > /dev/null 2>&1 && eval "$(pyenv virtualenv-init -)"
+fi

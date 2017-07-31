@@ -1,5 +1,5 @@
-VUNDLE_HOME=~/.vim/bundle/Vundle.vim
-DEV_HOME=~/dev
+VIMPLUG_HOME=${HOME}/.vim/autoload
+DEV_HOME=${HOME}/dev
 REPO_PATH=$(git rev-parse --show-toplevel)
 
 function exists-in-path {
@@ -13,30 +13,15 @@ function exists-in-path {
 
 [ -d $DEV_HOME ] || mkdir -p $DEV_HOME
 
-# install home brew if not installed
+# bootstrap homebrew
 exists-in-path brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-cd brew && brew bundle
+
+# install homebrew deps
+brew bundle --file=${REPO_PATH}/brew/Brewfile
 
 # link vimrc
 [[ -L ~/.vimrc && "$REPO_PATH/vimrc" == "$(readlink ~/.vimrc)" ]] || ([[ -e ~/.vimrc ]] && rm ~/.vimrc)
 [[ -L ~/.vimrc ]] || ln -s $REPO_PATH/vimrc ~/.vimrc
-
-# download vundle
-if [[ ! -e $VUNDLE_HOME ]]; then
-  git clone https://github.com/VundleVim/Vundle.vim.git $VUNDLE_HOME
-fi
-
-# install vundle plugins
-vim +PluginInstall +qall
-
-# setup python environment
-exists-in-path pip && exists-in-path virtualenvwrapper.sh || pip install virtualenvwrapper
-
-# create local .bin dir
-[ -d ~/.bin ] || mkdir ~/.bin
-
-# create virtualenvs directory
-[ -d ~/.virtualenvs ] || mkdir ~/.virtualenvs
 
 # link bash profile
 [[ -L ~/.profile && "$REPO_PATH/profile.sh" == "$(readlink ~/.profile)" ]] || ([[ -e ~/.profile ]] && rm ~/.profile)
@@ -50,3 +35,15 @@ exists-in-path pip && exists-in-path virtualenvwrapper.sh || pip install virtual
 [[ -L ~/.gitignore && "$REPO_PATH/gitignore" == "$(readlink ~/.gitignore)" ]] || ([[ -e ~/.gitignore ]] && rm ~/.gitignore)
 [[ -L ~/.gitignore ]] || ln -s $REPO_PATH/gitignore ~/.gitignore
 
+# create local .bin dir
+[ -d ~/.bin ] || mkdir ~/.bin
+
+# setup python environment
+./pyenv-versions.sh
+
+# setup vim-plug
+[ -d $VIMPLUG_HOME ] || mkdir -p $VIMPLUG_HOME
+[ -f $VIMPLUG_HOME/plug.vim ] || curl -Lo $VIMPLUG_HOME/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# ensure vim plugin deps are installed
+vim +PlugInstall +qall
