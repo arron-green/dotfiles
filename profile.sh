@@ -301,6 +301,8 @@ alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
 alias stripcolors='gsed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
+alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
+
 if [[ -f $HOME/.secrets/exports ]]; then
     source $HOME/.secrets/exports
 fi
