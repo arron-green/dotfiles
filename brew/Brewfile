@@ -20,12 +20,16 @@ brew 'golang'
 brew 'nvm'
 brew 'lua'
 brew 'rust'
+brew 'perl'
+brew 'ruby'
+brew 'idris'
 
 # development tools
 cask 'intellij-idea-ce'
 cask 'sublime-text'
 cask 'atom'
 cask 'docker'
+brew 'docker-machine'
 mas 'Xcode', id: 497799835
 brew 'vim'
 brew 'macvim'
@@ -46,6 +50,7 @@ cask 'ammonite'
 brew 'ammonite-repl'
 brew 'apache-spark'
 brew 'avro-tools'
+brew 'apache-zeppelin'
 
 # utilities
 cask 'iterm2'
@@ -54,6 +59,7 @@ cask 'vagrant'
 cask 'virtualbox'
 cask 'diffmerge'
 cask 'screenhero'
+brew 'wrk'
 
 # etc
 mas '1password-password-manager-and-secure-wallet', id: 443987910
@@ -135,3 +141,27 @@ brew 'gettext'
 # Services
 brew 'mysql'
 brew 'redis@2.8'
+brew 'postgresql'
+brew 'neo4j'
+
+# Other
+brew 'certbot'
+brew 'ddrescue'
+brew 'fdk-aac'
+brew 'fribidi'
+brew 'homebrew/science/opencv'
+brew 'lame'
+brew 'libevent'
+brew 'libvorbis'
+brew 'libvpx'
+brew 'opus'
+brew 'socat'
+brew 'tesseract'
+brew 'texi2html'
+brew 'x265'
+brew 'xmlstarlet'
+
+cask 'google-cloud-sdk'
+cask 'ngrok'
+cask 'openframeworks'
+cask 'xquartz'
