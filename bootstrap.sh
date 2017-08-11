@@ -13,6 +13,12 @@ function exists-in-path {
 
 [ -d $DEV_HOME ] || mkdir -p $DEV_HOME
 
+xcode-select -p || {
+    echo "xcodebuild accept license"; \
+    sudo xcodebuild -license accept; \
+    xcode-select --install;
+}
+
 # bootstrap homebrew
 exists-in-path brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
