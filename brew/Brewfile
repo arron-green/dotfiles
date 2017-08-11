@@ -1,5 +1,6 @@
 cask_args appdir: '/Applications'
 tap 'caskroom/cask'
+tap 'homebrew/science' # opencv
 
 # essentials
 brew 'git'
@@ -10,6 +11,8 @@ brew 'jq'
 brew 'gpg'
 cask 'private-internet-access'
 cask 'keybase'
+cask 'google-chrome'
+cask 'firefox'
 
 # languages
 cask 'java'
@@ -149,7 +152,7 @@ brew 'certbot'
 brew 'ddrescue'
 brew 'fdk-aac'
 brew 'fribidi'
-brew 'homebrew/science/opencv'
+brew 'opencv'
 brew 'lame'
 brew 'libevent'
 brew 'libvorbis'
