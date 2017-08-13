@@ -72,6 +72,7 @@ mas 'divvy-window-manager', id: 413857545
 mas 'yubikey-personalization-tool', id: 638161122
 mas 'amphetamine', id: 937984704
 
+brew 'zlib'
 brew 'ack'
 brew 'autoconf'
 brew 'automake'

@@ -1,6 +1,6 @@
+export DEV_HOME=${HOME}/dev
+export REPO_PATH=$(git rev-parse --show-toplevel)
 VIMPLUG_HOME=${HOME}/.vim/autoload
-DEV_HOME=${HOME}/dev
-REPO_PATH=$(git rev-parse --show-toplevel)
 
 function exists-in-path {
     if [[ ! -z $1 ]]; then
@@ -53,3 +53,7 @@ brew bundle --file=${REPO_PATH}/brew/Brewfile
 
 # ensure vim plugin deps are installed
 vim +PlugInstall +qall
+
+# install extra tools not available via brew
+./tools.sh
+
