@@ -1,6 +1,9 @@
 [user]
-  email = "(none)"
   name = Arron Green
+
+[credential]
+  helper = osxkeychain
+  useHttpPath = true
 
 [core]
   editor = vim
