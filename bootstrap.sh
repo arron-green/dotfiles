@@ -29,7 +29,11 @@ brew bundle --file=${REPO_PATH}/brew/Brewfile
 [[ -L ~/.vimrc && "$REPO_PATH/vimrc" == "$(readlink ~/.vimrc)" ]] || ([[ -e ~/.vimrc ]] && rm ~/.vimrc)
 [[ -L ~/.vimrc ]] || ln -s $REPO_PATH/vimrc ~/.vimrc
 
-# link bash profile
+# link bash_profile
+[[ -L ~/.bash_profile && "$REPO_PATH/bash_profile" == "$(readlink ~/.bash_profile)" ]] || ([[ -e ~/.bash_profile ]] && rm ~/.bash_profile)
+[[ -L ~/.bash_profile ]] || ln -s $REPO_PATH/bash_profile ~/.bash_profile
+
+# link profile
 [[ -L ~/.profile && "$REPO_PATH/profile.sh" == "$(readlink ~/.profile)" ]] || ([[ -e ~/.profile ]] && rm ~/.profile)
 [[ -L ~/.profile ]] || ln -s $REPO_PATH/profile.sh ~/.profile
 
