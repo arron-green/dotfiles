@@ -1,5 +1,5 @@
 [user]
-  email = arrong@gmail.com
+  email = "(none)"
   name = Arron Green
 
 [core]
@@ -12,6 +12,9 @@
 [alias]
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=format:\"%C(yellow)%h %C(white)%d%Creset %s %Cblue(%an) %Cred%cr\" --abbrev-commit --all
+  setuser-personal = !git config user.name 'Arron Green' && git config user.email 'arrong@gmail.com' && git whoami
+  setuser-work = !git config user.name 'Arron Green' && git config user.email 'arron.green@wework.com' && git whoami
+  whoami = !bash -c 'echo \"$(git config --get user.name) <$(git config --get user.email)>\"'
 
 [merge]
   tool = diffmerge
