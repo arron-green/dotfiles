@@ -178,7 +178,7 @@ cmap w!! %!sudo tee > /dev/null %
 
 let g:jedi#auto_initialization = 0
 
-let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_checkers = ['flake8', 'pylint']
 autocmd BufRead,BufNewFile *.html setlocal filetype=htmldjango
 autocmd BufRead,BufNewFile *.json.j2 setlocal filetype=json
 
