@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+
+function verify-usage {
+    if [ "$1" -lt "1" ]; then
+        echo "Usage : $0 /Applications/Safari.app"
+        exit 1
+    fi
+}
+
+function is-app-in-dock {
+    DOCKED_APPS="$(defaults read com.apple.dock persistent-apps | grep "\"_CFURLString\"" | grep -oEi "file://(.*)\"" | sed -E 's;/?";;' | sed -E 's;^file://;;')"
+    echo "${DOCKED_APPS}" | grep -q "$1"
+}
+
+function is-other-in-dock {
+    DOCKED_OTHERS="$(defaults read com.apple.dock persistent-others | grep "\"_CFURLString\"" | grep -oEi "file://(.*)\"" | sed -E 's;/?";;' | sed -E 's;^file://;;')"
+    echo "${DOCKED_OTHERS}" | grep -q "$1"
+}
+
+function apple-dock-app-entry {
+    PATH_TO_DOCK="$1"
+    APP_TYPE="$2"
+    EXTRA=$(case $APP_TYPE in
+            D)
+                echo "<key>tile-type</key><string>directory-tile</string>"
+                ;;
+            F)
+                echo "<key>tile-type</key><string>file-tile</string>"
+                ;;
+            *)
+                echo ""
+                ;;
+        esac)
+
+    printf '<dict>
+                <key>tile-data</key>
+                <dict>
+                    <key>file-data</key>
+                    <dict>
+                        <key>_CFURLString</key><string>%s</string>
+                        <key>_CFURLStringType</key><integer>0</integer>
+                    </dict>
+                </dict>
+                %s
+            </dict>' "${PATH_TO_DOCK}" "${EXTRA}"
+}
+
+function add-app {
+    APP="$1"
+    if [ -d "${APP}" ] || [ -f "${APP}" ] ; then
+        defaults write com.apple.dock persistent-apps -array-add "$(apple-dock-app-entry "${APP}")"
+    fi
+}
+
+function add-other {
+    APP="$1"
+    if [ -d "${APP}" ] || [ -f "${APP}" ] || [ -L "${APP}" ]; then
+        NUM_PERIODS=`echo "$(basename "${APP}")" | awk -F "." '{ print NF-1 }'`
+
+        if [ -d "${APP}" ] || [ ${NUM_PERIODS} -eq 0 ]; then
+            defaults write com.apple.dock persistent-others -array-add "$(apple-dock-app-entry "${APP}" "D")"
+        else
+            defaults write com.apple.dock persistent-others -array-add "$(apple-dock-app-entry "${APP}" "F")"
+        fi
+    fi
+
+}
+
+function is-app {
+    if [ "${1##*.}" == "app" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+verify-usage "$#"
+ADDED=0
+for p; do
+    if is-app "$p"; then
+        is-app-in-dock "$p" || { add-app "$p"; ADDED=$(( ADDED+1 )); }
+    else
+        is-other-in-dock "$p" || { add-other "$p"; ADDED=$(( ADDED+1 )); }
+    fi
+done
+
+echo $ADDED
+if [[ "$ADDED" > "0" ]]; then
+    echo restarting
+    killall Dock
+fi

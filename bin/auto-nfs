@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+function show-usage {
+    echo "Usage: $0 [nfs host ip] [nfs mount path]"
+    exit 1
+}
+
+NFS_HOST="${1}"
+if [ -z $NFS_HOST ]; then
+    show-usage
+fi
+
+NFS_SHARE="${2}"
+if [ -z $NFS_SHARE ]; then
+    show-usage
+fi
+
+if [[ $UID != 0 ]]; then
+    echo "script requires sudo"
+    exit 1
+fi
+
+LOCAL_VOLUME="home-nfs"
+NFS_HOST_SHARE="nfs://$NFS_HOST:$NFS_SHARE"
+AUTO_MASTER_PATH=/etc/auto_master
+AUTO_MASTER='/-             auto_nfs        -nobrowse,nosuid'
+AUTO_NFS_PATH=/etc/auto_nfs
+AUTO_NFS="/../Volumes/$LOCAL_VOLUME    -fstype=nfs,noowners,nolockd,noresvport,hard,bg,intr,rw,tcp,nfc $NFS_HOST_SHARE"
+
+grep -p "auto_nfs" $AUTO_MASTER_PATH || echo $AUTO_MASTER | tee -a $AUTO_MASTER_PATH
+[[ -e $AUTO_NFS_PATH ]] || gtouch $AUTO_NFS_PATH
+grep -p "$AUTO_NFS" $AUTO_NFS_PATH || (echo $AUTO_NFS | tee $AUTO_NFS_PATH)
+[[ "$(gstat -c "%a" $AUTO_NFS_PATH)" == "644" ]] || chmod 644 $AUTO_NFS_PATH
+mount -av
