@@ -1,18 +1,22 @@
 cask_args appdir: '/Applications'
 tap 'caskroom/cask'
 tap 'homebrew/science' # opencv
+tap 'homebrew/dupes'
+tap 'homebrew/php'
 
 # essentials
+cask 'iterm2'
 brew 'git'
 brew 'bash'
 brew 'bash-completion'
 brew 'bash-git-prompt'
-brew 'jq'
-brew 'gpg'
-cask 'private-internet-access'
-cask 'keybase'
 cask 'google-chrome'
+cask 'keybase'
+brew 'gpg'
+brew 'jq'
 cask 'firefox'
+cask 'spotify'
+cask 'private-internet-access'
 
 # languages
 cask 'java'
@@ -25,7 +29,10 @@ brew 'lua'
 brew 'rust'
 brew 'perl'
 brew 'ruby'
+brew 'rbenv'
 brew 'idris'
+brew 'php71'
+brew 'composer'
 
 # development tools
 cask 'intellij-idea-ce'
@@ -49,20 +56,19 @@ brew 'bazel'
 brew 'giter8'
 brew 'zinc'
 brew 'nailgun'
-cask 'ammonite'
 brew 'ammonite-repl'
 brew 'apache-spark'
 brew 'avro-tools'
 brew 'apache-zeppelin'
 
 # utilities
-cask 'iterm2'
 cask 'dropbox'
 cask 'vagrant'
 cask 'virtualbox'
 cask 'diffmerge'
 cask 'screenhero'
 brew 'wrk'
+brew 'asciinema'
 
 # etc
 mas '1password-password-manager-and-secure-wallet', id: 443987910
@@ -71,6 +77,7 @@ mas 'slack', id: 803453959
 mas 'divvy-window-manager', id: 413857545
 mas 'yubikey-personalization-tool', id: 638161122
 mas 'amphetamine', id: 937984704
+mas 'noteability', id: 736189492
 
 brew 'ack'
 brew 'autoconf'

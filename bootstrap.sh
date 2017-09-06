@@ -51,6 +51,9 @@ brew bundle --file=${REPO_PATH}/brew/Brewfile
 # setup python environment
 ./pyenv-versions.sh
 
+# setup ruby environment
+./rbenv-versions.sh
+
 # setup vim-plug
 [ -d $VIMPLUG_HOME ] || mkdir -p $VIMPLUG_HOME
 [ -f $VIMPLUG_HOME/plug.vim ] || curl -Lo $VIMPLUG_HOME/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim

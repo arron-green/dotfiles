@@ -36,17 +36,17 @@ function ps1-prompt() {
 
     # python specific
     VENV=""
-    [[ ! -z $VIRTUAL_ENV ]] && VENV=" [${COLOR_BLUE}V${COLOR_NIL}]"
+    if [[ ! -z $VIRTUAL_ENV ]]; then
+        VENV=" [${COLOR_BLUE}${PYENV_VERSION-V}${COLOR_NIL}]"
+    fi
 
-    END="${COLOR_BLUE}\$${COLOR_NIL} "
+    END="${COLOR_GREEN}\$${COLOR_NIL} "
     export PS1="${PS1_PREFIX}${VENV}${GIT} ${END}"
 }
 export PROMPT_COMMAND=ps1-prompt
 
 # tab completion
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-   . $(brew --prefix)/etc/bash_completion
-fi
+[[ -f $(brew --prefix bash-completion)/etc/bash_completion ]] && source $(brew --prefix)/etc/bash_completion
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" scp
 type -p aws_completer > /dev/null 2>&1 && complete -C "$(type -p aws_completer)" aws
@@ -247,7 +247,7 @@ function aws-enable-mfa {
 export JAVA_HOME=`/usr/libexec/java_home`
 
 # default to scala 2.11
-BREW_SCALA_HOME="$(brew --prefix)/opt/scala@2.11"
+BREW_SCALA_HOME="$(brew --prefix scala@2.11)"
 if [[ -d "${BREW_SCALA_HOME}/bin" ]]; then
     export PATH="${BREW_SCALA_HOME}/bin:$PATH"
     export SCALA_HOME="$(find-scala-home)"
@@ -260,30 +260,32 @@ if [[ -d $HOME/.conscript ]]; then
     export PATH="$PATH:$HOME/.conscript/bin"
 fi
 
-export PATH="/usr/local/opt/openssl/bin:$PATH"
+export OPENSSL_HOME="$(brew --prefix openssl)"
+export PATH="$OPENSSL_HOME/bin:$PATH"
 
-# export LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/lib -L/usr/local/opt/openldap/lib"
-# export CPPFLAGS="-I/usr/local/opt/openssl/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I/usr/local/include"
-# export PKG_CONFIG_PATH=/usr/local/opt/openssl/lib/pkgconfig
+# export LDFLAGS="-shared -L$OPENSSL_HOME/lib -L$(brew --prefix)/lib"
+# export LDFLAGS="-L$OPENSSL_HOME/lib"
+# export CPPFLAGS="-I$OPENSSL_HOME/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I$(brew --prefix)/include"
+# export PKG_CONFIG_PATH="$OPENSSL_HOME/lib/pkgconfig"
+
+# NOTE: horrible openssl osx hacks :(
+[[ -L $(brew --prefix)/lib/libcrypto.1.0.0.dylib ]] || ln -s $OPENSSL_HOME/lib/libcrypto.1.0.0.dylib $(brew --prefix)/lib/
+[[ -L $(brew --prefix)/lib/libssl.1.0.0.dylib ]] || ln -s $OPENSSL_HOME/lib/libssl.1.0.0.dylib $(brew --prefix)/lib/
 
 # NOTE: required to compile rust-openssl
-export OPENSSL_INCLUDE_DIR="/usr/local/opt/openssl/include"
-export DEP_OPENSSL_INCLUDE="$OPENSSL_INCLUDE_DIR"
-
-export LDFLAGS="-L/usr/local/opt/openssl/lib"
-export CPPFLAGS="-I$OPENSSL_INCLUDE_DIR"
-export PKG_CONFIG_PATH="/usr/local/opt/openssl/lib/pkgconfig"
+export OPENSSL_INCLUDE_DIR="$OPENSSL_HOME/include"
+export DEP_OPENSSL_INCLUDE="$OPENSSL_HOME/include"
 
 # ZEPPELIN SPECIFIC
 if [[ -d $HOME/.zeppelin-conf ]]; then
     export ZEPPELIN_CONF_DIR="$HOME/.zeppelin-conf"
 fi
 
-# export LDFLAGS=-L/usr/local/opt/readline/lib
+# export LDFLAGS=
 # export CPPFLAGS=-I/usr/local/opt/readline/include
 
 # nodejs specific
-export BREW_NVM_HOME="$(brew --prefix)/opt/nvm"
+export BREW_NVM_HOME="$(brew --prefix nvm)"
 if [[ -d $BREW_NVM_HOME ]]; then
     export NVM_DIR="$HOME/.nvm"
     [[ -d "$NVM_DIR" ]] || mkdir -p "$NVM_DIR"
@@ -307,8 +309,18 @@ if [[ -f $HOME/.secrets/exports ]]; then
     source $HOME/.secrets/exports
 fi
 
+# ruby rbenv specific
+if type -p rbenv > /dev/null 2>&1; then
+    export PATH="$(brew --prefix rbenv)/bin:$PATH"
+    eval "$(rbenv init -)"
+fi
+
 # python pyenv specific
 if type -p pyenv > /dev/null 2>&1; then
+    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
     eval "$(pyenv init -)"
     type -p pyenv-virtualenv-init > /dev/null 2>&1 && eval "$(pyenv virtualenv-init -)"
 fi
+
+
+
