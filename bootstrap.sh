@@ -23,6 +23,7 @@ xcode-select -p || {
 exists-in-path brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # install homebrew deps
+brew update
 brew bundle --file=${REPO_PATH}/brew/Brewfile
 
 # link vimrc
