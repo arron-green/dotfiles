@@ -297,10 +297,8 @@ alias "certs-show-csr"='openssl req -noout -text -in '
 alias "certs-show-key"='openssl rsa -noout -text -in '
 alias "certs-show-pem"='openssl x509 -noout -text -in '
 alias "certs-show-sig"='openssl pkcs7 -inform der -noout -text -print_certs -in '
-alias urldecode='python -c "import sys, urllib as ul; \
-  print ul.unquote_plus(sys.argv[1])"'
-alias urlencode='python -c "import sys, urllib as ul; \
-    print ul.quote_plus(sys.argv[1])"'
+alias urldecode='python -c "import sys; from urllib.parse import unquote_plus; print(unquote_plus(sys.argv[1]))"'
+alias urlencode='python -c "import sys; from urllib.parse import quote_plus; print(quote_plus(sys.argv[1]))"'
 alias stripcolors='gsed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
 alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
