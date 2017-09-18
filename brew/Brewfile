@@ -24,6 +24,7 @@ brew 'scala@2.11'
 brew 'pyenv'
 brew 'pyenv-virtualenv'
 brew 'golang'
+brew 'gpm' # go package manager
 brew 'nvm'
 brew 'lua'
 brew 'rust'
@@ -44,6 +45,7 @@ mas 'Xcode', id: 497799835
 brew 'vim'
 brew 'macvim'
 brew 'heroku-toolbelt'
+cask 'minikube'
 
 # build tools
 brew 'sbt'
