@@ -253,6 +253,10 @@ function aws-enable-mfa {
     SERIAL_NUM=$(aws iam list-virtual-mfa-devices | jq -rc ".VirtualMFADevices | map(select(.SerialNumber | contains(\"$USER\"))) | .[] .SerialNumber")
 }
 
+function ack-json-log {
+    ack '^<\d+>\d+-\d+-\d+T\d+:\d+:\d+Z\s[\w-]+\s[\w\(\)\[\]]+:\s(?<json>\{.+\})$' --output '$+{json}' $@
+}
+
 export JAVA_HOME=`/usr/libexec/java_home`
 
 # default to scala 2.11
