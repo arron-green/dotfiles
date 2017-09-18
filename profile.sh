@@ -110,6 +110,15 @@ function notify {
   terminal-notifier -message "$*" -title done -subtitle "$(($end - $start)) seconds"
 }
 
+# Kubernetes specific
+function minikube-dns {
+  # Remove any existing routes
+  sudo route -n delete 10/24 > /dev/null 2>&1
+
+  # Create route
+  sudo route -n add 10.0.0.0/24 $(minikube ip)
+}
+
 # Docker specific
 function docker-init {
   NAME="$1"
