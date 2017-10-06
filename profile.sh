@@ -44,9 +44,10 @@ function ps1-prompt() {
     export PS1="${PS1_PREFIX}${VENV}${GIT} ${END}"
 }
 export PROMPT_COMMAND=ps1-prompt
+BREW_PREFIX=$(brew --prefix)
 
 # tab completion
-[[ -f $(brew --prefix bash-completion)/etc/bash_completion ]] && source $(brew --prefix)/etc/bash_completion
+[[ -f ${BREW_PREFIX}/opt/bash-completion/etc/bash_completion ]] && source ${BREW_PREFIX}/opt/bash-completion/etc/bash_completion
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" scp
 type -p aws_completer > /dev/null 2>&1 && complete -C "$(type -p aws_completer)" aws
@@ -254,13 +255,13 @@ function aws-enable-mfa {
 }
 
 function ack-json-log {
-    ack '^<\d+>\d+-\d+-\d+T\d+:\d+:\d+Z\s[\w-]+\s[\w\(\)\[\]]+:\s(?<json>\{.+\})$' --output '$+{json}' $@
+    ack '^<\d+>\d+-\d+-\d+T\d+:\d+:\d+Z\s[\w-]+\s[\w\(\)\[\]-]+:\s(?<json>\{.+\})$' --output '$+{json}' $@
 }
 
 export JAVA_HOME=`/usr/libexec/java_home`
 
 # default to scala 2.11
-BREW_SCALA_HOME="$(brew --prefix scala@2.11)"
+BREW_SCALA_HOME="${BREW_PREFIX}/opt/scala@2.11"
 if [[ -d "${BREW_SCALA_HOME}/bin" ]]; then
     export PATH="${BREW_SCALA_HOME}/bin:$PATH"
     export SCALA_HOME="$(find-scala-home)"
@@ -273,17 +274,19 @@ if [[ -d $HOME/.conscript ]]; then
     export PATH="$PATH:$HOME/.conscript/bin"
 fi
 
-export OPENSSL_HOME="$(brew --prefix openssl)"
+export OPENSSL_HOME="${BREW_PREFIX}/opt/openssl"
 export PATH="$OPENSSL_HOME/bin:$PATH"
 
-# export LDFLAGS="-shared -L$OPENSSL_HOME/lib -L$(brew --prefix)/lib"
+# export LDFLAGS="-shared -L$OPENSSL_HOME/lib -L${BREW_PREFIX}/lib"
 # export LDFLAGS="-L$OPENSSL_HOME/lib"
-# export CPPFLAGS="-I$OPENSSL_HOME/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I$(brew --prefix)/include"
+# export CPPFLAGS="-I$OPENSSL_HOME/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I${BREW_PREFIX}/include"
 # export PKG_CONFIG_PATH="$OPENSSL_HOME/lib/pkgconfig"
+# export LDFLAGS=
+# export CPPFLAGS=-I/usr/local/opt/readline/include
 
 # NOTE: horrible openssl osx hacks :(
-[[ -L $(brew --prefix)/lib/libcrypto.1.0.0.dylib ]] || ln -s $OPENSSL_HOME/lib/libcrypto.1.0.0.dylib $(brew --prefix)/lib/
-[[ -L $(brew --prefix)/lib/libssl.1.0.0.dylib ]] || ln -s $OPENSSL_HOME/lib/libssl.1.0.0.dylib $(brew --prefix)/lib/
+[[ -L ${BREW_PREFIX}/lib/libcrypto.1.0.0.dylib ]] || ln -s $OPENSSL_HOME/lib/libcrypto.1.0.0.dylib ${BREW_PREFIX}/lib/
+[[ -L ${BREW_PREFIX}/lib/libssl.1.0.0.dylib ]] || ln -s $OPENSSL_HOME/lib/libssl.1.0.0.dylib ${BREW_PREFIX}/lib/
 
 # NOTE: required to compile rust-openssl
 export OPENSSL_INCLUDE_DIR="$OPENSSL_HOME/include"
@@ -294,17 +297,18 @@ if [[ -d $HOME/.zeppelin-conf ]]; then
     export ZEPPELIN_CONF_DIR="$HOME/.zeppelin-conf"
 fi
 
-# export LDFLAGS=
-# export CPPFLAGS=-I/usr/local/opt/readline/include
-
 # nodejs specific
-export BREW_NVM_HOME="$(brew --prefix nvm)"
+export BREW_NVM_HOME="${BREW_PREFIX}/opt/nvm"
 if [[ -d $BREW_NVM_HOME ]]; then
     export NVM_DIR="$HOME/.nvm"
     [[ -d "$NVM_DIR" ]] || mkdir -p "$NVM_DIR"
     source "$BREW_NVM_HOME/nvm.sh"
 fi
 
+
+function vimeo-dl {
+  youtube-dl $@
+}
 
 alias "certs-show-csr"='openssl req -noout -text -in '
 alias "certs-show-key"='openssl rsa -noout -text -in '
@@ -322,7 +326,7 @@ fi
 
 # ruby rbenv specific
 if type -p rbenv > /dev/null 2>&1; then
-    export PATH="$(brew --prefix rbenv)/bin:$PATH"
+    export PATH="${BREW_PREFIX}/opt/rbenv/bin:$PATH"
     eval "$(rbenv init -)"
 fi
 
@@ -332,6 +336,3 @@ if type -p pyenv > /dev/null 2>&1; then
     eval "$(pyenv init -)"
     type -p pyenv-virtualenv-init > /dev/null 2>&1 && eval "$(pyenv virtualenv-init -)"
 fi
-
-
-
