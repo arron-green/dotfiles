@@ -1,5 +1,6 @@
 cask_args appdir: '/Applications'
 tap 'caskroom/cask'
+tap 'caskroom/versions'
 tap 'homebrew/science' # opencv
 tap 'homebrew/dupes'
 tap 'homebrew/php'
@@ -14,12 +15,14 @@ cask 'google-chrome'
 cask 'keybase'
 brew 'gpg'
 brew 'jq'
+brew 'streamlink'
 cask 'firefox'
 cask 'spotify'
 cask 'private-internet-access'
+cask 'mpv'
 
 # languages
-cask 'java'
+cask 'java8'
 brew 'scala@2.11'
 brew 'pyenv'
 brew 'pyenv-virtualenv'
@@ -40,7 +43,7 @@ cask 'intellij-idea-ce'
 cask 'sublime-text'
 cask 'atom'
 cask 'docker'
-brew 'docker-machine'
+cask 'kitematic'
 mas 'Xcode', id: 497799835
 brew 'vim'
 brew 'macvim'
@@ -71,6 +74,7 @@ cask 'diffmerge'
 cask 'screenhero'
 brew 'wrk'
 brew 'asciinema'
+brew 'youtube-dl'
 
 # etc
 mas '1password-password-manager-and-secure-wallet', id: 443987910
