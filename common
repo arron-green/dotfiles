@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+export VIMPLUG_HOME=${HOME}/.vim/autoload
+export DEV_HOME=${HOME}/dev
+export REPO_PATH=$(git rev-parse --show-toplevel)
+export MY_BIN=${HOME}/.bin
+
+function echo-err { echo "$@" 1>&2; }
+
+function exists-in-path {
+    if [[ ! -z $1 ]]; then
+        type -p $1 > /dev/null 2>&1
+        return $?
+    else
+        return 1
+    fi
+}
+
+function symlink-src-to-target {
+    SRC=$1
+    TARGET=$2
+    if [ $# != 2 ]; then
+        echo-err "Usage: $0 [src] [target]"
+        return 1
+    fi
+    # only link files or directories rather than linking other symlinks
+    if [[ -f $SRC || -d $SRC ]]; then
+        # is target already a symlink that points to the expected?
+        if [[ -L $TARGET && "$(readlink $TARGET)" == "$SRC" ]]; then :
+        else
+            # check if target exists, if it exists, then make a backup (rather than deleting)
+            [[ -e $TARGET ]] && mv "$TARGET" "$(dirname $TARGET)/$(basename $TARGET).$(date +%s).bak"
+            [[ -L $TARGET ]] || ln -s "$SRC" "$TARGET"
+        fi
+        return 0
+    else
+        echo-err "$SRC is not a file or a directory"
+        return 1
+    fi
+}

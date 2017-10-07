@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+source ./common
+
+[ -d $DEV_HOME ] || mkdir -p $DEV_HOME
+
+xcode-select -p || {
+    echo "xcodebuild accept license"; \
+    sudo xcodebuild -license accept; \
+    xcode-select --install;
+}
+
+# bootstrap homebrew
+exists-in-path brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# install homebrew deps
+brew update
+brew bundle --file=${REPO_PATH}/brew/Brewfile
+
+# setup environment links
+symlink-src-to-target "$REPO_PATH/vimrc" "$HOME/.vimrc"
+symlink-src-to-target "$REPO_PATH/bash_profile" "$HOME/.bash_profile"
+symlink-src-to-target "$REPO_PATH/profile.sh" "$HOME/.profile"
+symlink-src-to-target "$REPO_PATH/gitconfig" "$HOME/.gitconfig"
+symlink-src-to-target "$REPO_PATH/gitignore" "$HOME/.gitignore"
+
+# link bin files
+[ -d $MY_BIN ] || mkdir $MY_BIN
+while read SCRIPT_SRC; do
+    if [[ -x $SCRIPT_SRC ]]; then
+        symlink-src-to-target "$SCRIPT_SRC" "${MY_BIN}/$(basename $SCRIPT_SRC)"
+    else
+        echo-err "Did not link ${SCRIPT_SRC} because it's not marked as executable"
+    fi
+done < <(find $REPO_PATH/bin -type f -maxdepth 1 -mindepth 1)
+
+# setup python environment
+./pyenv-versions
+
+# setup ruby environment
+./rbenv-versions
+
+# setup vim-plug
+[ -d $VIMPLUG_HOME ] || mkdir -p $VIMPLUG_HOME
+[ -f $VIMPLUG_HOME/plug.vim ] || curl -Lo $VIMPLUG_HOME/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+# ensure vim plugin deps are installed
+vim +PlugInstall +qall
