@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+SSLHOST=${1}
+SSLPORT=${2-443}
+if [ $# != 1 ]; then
+    echo "Retrieves a SSL Certificate Authority from a given host and port"
+    echo "Usage: $(basename $0) [host] [port-443]"
+    exit 1
+fi
+
+echo "" | openssl x509 -in \
+    <(openssl s_client -connect $SSLHOST:$SSLPORT -prexit 2>/dev/null)
