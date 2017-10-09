@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 SSLHOST=${1}
 SSLPORT=${2-443}
-if [ $# != 1 ]; then
+if [ $# -lt 1 ]; then
     echo "Retrieves a SSL Certificate Authority from a given host and port"
     echo "Usage: $(basename $0) [host] [port-443]"
     exit 1
