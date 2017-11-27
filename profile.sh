@@ -314,6 +314,8 @@ function vimeo-dl {
   youtube-dl $@
 }
 
+alias "docker-rm-dangling"='docker rmi -f $(docker images -q --filter "dangling=true")'
+alias "http-python"='python -m http.server 8000'
 alias "certs-show-csr"='openssl req -noout -text -in '
 alias "certs-show-key"='openssl rsa -noout -text -in '
 alias "certs-show-pem"='openssl x509 -noout -text -in '
