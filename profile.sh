@@ -258,7 +258,7 @@ function ack-json-log {
     ack '^<\d+>\d+-\d+-\d+T\d+:\d+:\d+Z\s[\w-]+\s[\w\(\)\[\]-]+:\s(?<json>\{.+\})$' --output '$+{json}' $@
 }
 
-export JAVA_HOME=`/usr/libexec/java_home`
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 
 # default to scala 2.11
 BREW_SCALA_HOME="${BREW_PREFIX}/opt/scala@2.11"
