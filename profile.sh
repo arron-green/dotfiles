@@ -277,6 +277,10 @@ fi
 export OPENSSL_HOME="${BREW_PREFIX}/opt/openssl"
 export PATH="$OPENSSL_HOME/bin:$PATH"
 
+if [[ -d /usr/local/confluent-3.3.0/bin ]]; then
+    export PATH="$PATH:/usr/local/confluent-3.3.0/bin"
+fi
+
 # export LDFLAGS="-shared -L$OPENSSL_HOME/lib -L${BREW_PREFIX}/lib"
 # export LDFLAGS="-L$OPENSSL_HOME/lib"
 # export CPPFLAGS="-I$OPENSSL_HOME/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I${BREW_PREFIX}/include"
