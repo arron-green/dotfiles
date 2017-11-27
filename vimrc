@@ -107,6 +107,11 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
+autocmd BufRead,BufNewFile *.rb setlocal tabstop=2
+autocmd BufRead,BufNewFile *.rb setlocal shiftwidth=2
+autocmd BufRead,BufNewFile *.rb setlocal softtabstop=2
+au FileType ruby setl sw=2 sts=2 et
+
 autocmd BufRead,BufNewFile *.js setlocal tabstop=2
 autocmd BufRead,BufNewFile *.js setlocal shiftwidth=2
 autocmd BufRead,BufNewFile *.js setlocal softtabstop=2
