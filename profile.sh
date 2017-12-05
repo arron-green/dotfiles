@@ -277,8 +277,10 @@ fi
 export OPENSSL_HOME="${BREW_PREFIX}/opt/openssl"
 export PATH="$OPENSSL_HOME/bin:$PATH"
 
-if [[ -d /usr/local/confluent-3.3.0/bin ]]; then
-    export PATH="$PATH:/usr/local/confluent-3.3.0/bin"
+# export CONFLUENT_HOME="/usr/local/confluent-3.3.0"
+export CONFLUENT_HOME="/usr/local/confluent-4.0.0"
+if [[ -d ${CONFLUENT_HOME}/bin ]]; then
+    export PATH="$PATH:${CONFLUENT_HOME}/bin"
 fi
 
 # export LDFLAGS="-shared -L$OPENSSL_HOME/lib -L${BREW_PREFIX}/lib"
