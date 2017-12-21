@@ -145,6 +145,9 @@ function epoch-to-human {
   fi
 }
 
+alias "iso8601-now"="gdate +%Y-%m-%dT%H:%M:%S%z"
+alias "iso8601-now-utc"="gdate -u +%Y-%m-%dT%H:%M:%S%z"
+
 #AWS specific
 function aws-profiles {
     CREDS=$HOME/.aws/credentials
