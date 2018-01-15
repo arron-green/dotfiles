@@ -50,7 +50,8 @@ mas 'Xcode', id: 497799835
 brew 'vim'
 brew 'macvim'
 brew 'heroku-toolbelt'
-cask 'minikube'
+brew 'kubernetes-cli'
+brew 'kubectx'
 
 # build tools
 brew 'sbt'
