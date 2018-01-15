@@ -144,6 +144,10 @@ function epoch-to-human {
       gdate -d @$EPOCH +'%F %r %Z'
   fi
 }
+function randUuid {
+  # only because a stupid ruby gem is first in my path
+  /usr/local/bin/uuid
+}
 
 alias "iso8601-now"="gdate +%Y-%m-%dT%H:%M:%S%z"
 alias "iso8601-now-utc"="gdate -u +%Y-%m-%dT%H:%M:%S%z"

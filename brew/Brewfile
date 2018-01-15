@@ -77,6 +77,7 @@ cask 'screenhero'
 brew 'wrk'
 brew 'asciinema'
 brew 'youtube-dl'
+brew 'ossp-uuid'
 
 # etc
 mas '1password-password-manager-and-secure-wallet', id: 443987910
