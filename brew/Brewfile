@@ -22,6 +22,7 @@ cask 'firefox'
 cask 'spotify'
 cask 'private-internet-access'
 cask 'mpv'
+brew 'syncthing'
 
 # languages
 cask 'java8'
