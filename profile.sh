@@ -46,6 +46,10 @@ function ps1-prompt() {
 export PROMPT_COMMAND=ps1-prompt
 BREW_PREFIX=$(brew --prefix)
 
+# bash history overrides
+export HISTCONTROL=ignoreboth # dont record commands that start with a space or commands that already exist
+export HISTSIZE=1500 # default is 500
+
 # tab completion
 [[ -f ${BREW_PREFIX}/opt/bash-completion/etc/bash_completion ]] && source ${BREW_PREFIX}/opt/bash-completion/etc/bash_completion
 complete -W "$(echo `cat ~/.ssh/known_hosts | cut -f 1 -d ' ' | sed -e s/,.*//g | uniq | grep -v "\["`;)" ssh
