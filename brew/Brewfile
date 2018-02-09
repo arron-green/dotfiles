@@ -85,6 +85,7 @@ brew 'ossp-uuid'
 mas '1password-password-manager-and-secure-wallet', id: 443987910
 mas 'status-clock', id: 552792489
 mas 'slack', id: 803453959
+cask 'gitter'
 mas 'divvy-window-manager', id: 413857545
 mas 'yubikey-personalization-tool', id: 638161122
 mas 'amphetamine', id: 937984704
