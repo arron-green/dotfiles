@@ -16,6 +16,7 @@ Plug 'jeetsukumaran/vim-buffergator'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-surround'
+Plug 'vito-c/jq.vim'
 
 " tab completion
 Plug 'ervandew/supertab'
