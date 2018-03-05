@@ -92,6 +92,7 @@ mas 'amphetamine', id: 937984704
 mas 'noteability', id: 736189492
 
 brew 'ack'
+brew 'ripgrep'
 brew 'autoconf'
 brew 'automake'
 brew 'awscli'
