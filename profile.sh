@@ -142,6 +142,35 @@ function docker-init {
   fi
 }
 
+function docker-image-grep {
+  QUIET=false
+  while [[ $# -gt 0 ]] && [[ ."$1" = .--* ]] ;do
+      opt="$1"; shift;
+      case "$opt" in
+          "--" ) break 2;;
+          "--image" )
+              IMAGE="$1"; shift;;
+          "--image="* )     # alternate format: --first=date
+              IMAGE="${opt#*=}";;
+          "-q" )
+              QUIET=true;;
+          "--quiet" )
+              QUIET=true;;
+          *) echo >&2 "Invalid option: $@";
+              return 1;;
+      esac
+  done
+
+  JSON=$(docker images --format '{{json .}}' | jq --arg IMAGE $IMAGE -rc 'select(.Repository | test($IMAGE))')
+  if [[ "$?" == "0" ]]; then
+      if [[ "$QUIET" == "true" ]]; then
+          echo $JSON | jq -rc '.ID' | xargs
+      else
+          echo $JSON | jq -rc .
+      fi
+  fi
+}
+
 function epoch-to-human {
   EPOCH="$1"
   if [ ! -z $EPOCH ]; then
