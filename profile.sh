@@ -294,6 +294,10 @@ if [[ -d ${CONFLUENT_HOME}/bin ]]; then
     export PATH="$PATH:${CONFLUENT_HOME}/bin"
 fi
 
+if [[ -d $BREW_PREFIX/opt/curl/bin ]]; then
+    export PATH="$BREW_PREFIX/opt/curl/bin:$PATH"
+fi
+
 # export LDFLAGS="-shared -L$OPENSSL_HOME/lib -L${BREW_PREFIX}/lib"
 # export LDFLAGS="-L$OPENSSL_HOME/lib"
 # export CPPFLAGS="-I$OPENSSL_HOME/include -I$(xcrun --show-sdk-path)/usr/include/sasl -I${BREW_PREFIX}/include"

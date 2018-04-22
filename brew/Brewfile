@@ -23,6 +23,7 @@ cask 'spotify'
 cask 'private-internet-access'
 cask 'mpv'
 brew 'syncthing'
+brew 'curl', args: ["with-nghttp2"]
 
 # languages
 cask 'java8'
