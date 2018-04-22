@@ -48,7 +48,7 @@ BREW_PREFIX=$(brew --prefix)
 
 # bash history overrides
 export HISTCONTROL=ignoreboth # dont record commands that start with a space or commands that already exist
-export HISTSIZE=1500 # default is 500
+export HISTSIZE=4000 # default is 500
 
 # tab completion
 [[ -f ${BREW_PREFIX}/opt/bash-completion/etc/bash_completion ]] && source ${BREW_PREFIX}/opt/bash-completion/etc/bash_completion
