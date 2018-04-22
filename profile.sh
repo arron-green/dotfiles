@@ -360,6 +360,7 @@ function vimeo-dl {
   youtube-dl $@
 }
 
+alias "ip-addr"="ipconfig getifaddr en0"
 alias "docker-rm-dangling"='docker rmi -f $(docker images -q --filter "dangling=true")'
 alias "http-python"='python -m http.server 8000'
 alias "certs-show-csr"='openssl req -noout -text -in '
