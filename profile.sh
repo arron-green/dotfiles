@@ -17,6 +17,10 @@ export COLOR_GREEN='\[\033[32m\]'
 export COLOR_BLUE='\[\033[34m\]'
 export COLOR_CYAN='\[\033[36m\]'
 
+function echo-err() {
+    printf "%s\n" "$*" >&2;
+}
+
 function ps1-prompt() {
     # current working directory
     PS1_PREFIX="${COLOR_GREEN}\W${COLOR_NIL}"
