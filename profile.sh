@@ -405,9 +405,64 @@ function vimeo-dl {
   youtube-dl $@
 }
 
+function http-python2 {
+    PORT=${1-8000}
+    echo "serving http-python2"
+    HTTP_SERVER_PY=$(cat <<EOF
+import SimpleHTTPServer
+import SocketServer
+PORT = $PORT
+class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+    pass
+Handler.extensions_map['.md'] = 'text/markdown'
+httpd = SocketServer.TCPServer(("", PORT), Handler)
+print "serving at port", PORT
+try:
+    httpd.serve_forever()
+except:
+    httpd.shutdown()
+    pass
+EOF
+)
+    open http://localhost:$PORT
+    python -c "$HTTP_SERVER_PY"
+}
+
+function http-python3 {
+    PORT=${1-8000}
+    echo "serving http-python3"
+    HTTP_SERVER_PY=$(cat <<EOF
+import http.server
+from http.server import HTTPServer, BaseHTTPRequestHandler
+import socketserver
+PORT = $PORT
+Handler = http.server.SimpleHTTPRequestHandler
+Handler.extensions_map['.md'] = 'text/markdown'
+httpd = socketserver.TCPServer(("", PORT), Handler)
+print("serving at port", PORT)
+try:
+    httpd.serve_forever()
+except:
+    httpd.shutdown()
+    pass
+EOF
+)
+    open http://localhost:$PORT
+    python -c "$HTTP_SERVER_PY"
+}
+
+function http-python {
+    HTTP_PORT=${1-8000}
+    PY_VERSION="$(python -V 2>&1 | cut -d' ' -f2)"
+    case "${PY_VERSION%%.*}" in
+        2) http-python2 "$HTTP_PORT" ;;
+        3) http-python3 "$HTTP_PORT" ;;
+        *) echo-err "unexpected python version $PY_VERSION"; return 1 ;;
+    esac
+}
+
 alias "ip-addr"="ipconfig getifaddr en0"
 alias "docker-rm-dangling"='docker rmi -f $(docker images -q --filter "dangling=true")'
-alias "http-python"='python -m http.server 8000'
 alias "certs-show-csr"='openssl req -noout -text -in '
 alias "certs-show-key"='openssl rsa -noout -text -in '
 alias "certs-show-pem"='openssl x509 -noout -text -in '
