@@ -341,6 +341,22 @@ function confluent-install {
         sudo mv "/tmp/confluent-${CONFLUENT_VERSION%.*}" "/usr/local/"
     fi
 }
+
+function mk-kafka-topic-compact {
+    TOPIC=${1}
+    if [ ! -z ${TOPIC} ]; then
+        kafka-topics \
+            --zookeeper localhost:2181 \
+            --create \
+            --topic "${TOPIC}" \
+            --replication-factor 1 \
+            --partitions 1 \
+            --config cleanup.policy=compact
+    else
+        echo "usage: ${0} [topic]"
+        return 1
+    fi
+}
 if [[ -d $BREW_PREFIX/opt/curl/bin ]]; then
     export PATH="$BREW_PREFIX/opt/curl/bin:$PATH"
 fi
