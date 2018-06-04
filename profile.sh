@@ -321,12 +321,26 @@ fi
 export OPENSSL_HOME="${BREW_PREFIX}/opt/openssl"
 export PATH="$OPENSSL_HOME/bin:$PATH"
 
-# export CONFLUENT_HOME="/usr/local/confluent-3.3.0"
-export CONFLUENT_HOME="/usr/local/confluent-4.0.0"
+export CONFLUENT_VERSION="4.1.0"
+export CONFLUENT_SCALA_VERSION="2.11"
+export CONFLUENT_HOME="/usr/local/confluent-${CONFLUENT_VERSION}"
 if [[ -d ${CONFLUENT_HOME}/bin ]]; then
     export PATH="$PATH:${CONFLUENT_HOME}/bin"
 fi
 
+function confluent-install {
+    if [[ -d $CONFLUENT_HOME ]]; then
+        echo "confluent kafka already installed"
+        return 0
+    else
+        CONFLUENT_ZIP="confluent-oss-${CONFLUENT_VERSION}-${CONFLUENT_SCALA_VERSION}.zip"
+        CONFLUENT_TMP="/tmp/${CONFLUENT_ZIP}"
+        CONFLUENT_DL="http://packages.confluent.io/archive/${CONFLUENT_VERSION%.*}}/${CONFLUENT_ZIP}"
+        curl -L -o "${CONFLUENT_TMP}" "${CONFLUENT_DL}"
+        unzip "${CONFLUENT_TMP}" -d /tmp
+        sudo mv "/tmp/confluent-${CONFLUENT_VERSION%.*}" "/usr/local/"
+    fi
+}
 if [[ -d $BREW_PREFIX/opt/curl/bin ]]; then
     export PATH="$BREW_PREFIX/opt/curl/bin:$PATH"
 fi
