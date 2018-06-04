@@ -153,6 +153,9 @@ nnoremap <leader>q gqip
 imap ,<tab> <C-x><C-o>
 set omnifunc=syntaxcomplete#Complete
 
+"Set EOL
+set endofline
+
 "Escape
 imap jj <esc>
 
