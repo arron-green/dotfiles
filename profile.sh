@@ -357,6 +357,17 @@ function mk-kafka-topic-compact {
         return 1
     fi
 }
+
+function pid-of-port {
+    PORT=${1}
+    if [ -z $PORT ]; then
+        echo "usage: ${0} [port]"
+        return 1
+    else
+        lsof -i:${PORT} -t
+    fi
+}
+
 if [[ -d $BREW_PREFIX/opt/curl/bin ]]; then
     export PATH="$BREW_PREFIX/opt/curl/bin:$PATH"
 fi
