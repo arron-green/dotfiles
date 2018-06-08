@@ -335,7 +335,7 @@ function confluent-install {
     else
         CONFLUENT_ZIP="confluent-oss-${CONFLUENT_VERSION}-${CONFLUENT_SCALA_VERSION}.zip"
         CONFLUENT_TMP="/tmp/${CONFLUENT_ZIP}"
-        CONFLUENT_DL="http://packages.confluent.io/archive/${CONFLUENT_VERSION%.*}}/${CONFLUENT_ZIP}"
+        CONFLUENT_DL="http://packages.confluent.io/archive/${CONFLUENT_VERSION%.*}/${CONFLUENT_ZIP}"
         curl -L -o "${CONFLUENT_TMP}" "${CONFLUENT_DL}"
         unzip "${CONFLUENT_TMP}" -d /tmp
         sudo mv "/tmp/confluent-${CONFLUENT_VERSION%.*}" "/usr/local/"
