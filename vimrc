@@ -40,9 +40,11 @@ Plug 'ajh17/Spacegray.vim'
 Plug 'vim-scripts/log4j.vim'
 Plug 'tfnico/vim-gradle'
 Plug 'derekwyatt/vim-scala'
-Plug 'gurpreetatwal/vim-avro'
+Plug 'gurpreetatwal/vim-avro', {'as': 'vim-avro-avdl'}  "only avdl support
+Plug 'AoLab/vim-avro', {'as': 'vim-avro-avsc'}          "only avsc support
 Plug 'GEverding/vim-hocon'
 Plug 'neo4j-contrib/cypher-vim-syntax'
+Plug 'valloric/youcompleteme'
 
 " javascript/json
 Plug 'mustache/vim-mustache-handlebars'
@@ -194,6 +196,9 @@ autocmd BufRead,BufNewFile *.json.j2 setlocal filetype=json
 " nerdtree
 let NERDTreeIgnore = ['^\.DS_Store$', '\.pyc$', '\.swp$', '^bazel\-.*']
 map <Leader>n :NERDTreeToggle<CR>
+
+" jvm specific
+set wildignore+=*/target/*
 
 function! StartUp()
     if has('gui_running')
