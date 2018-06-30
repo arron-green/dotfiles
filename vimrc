@@ -44,7 +44,6 @@ Plug 'gurpreetatwal/vim-avro', {'as': 'vim-avro-avdl'}  "only avdl support
 Plug 'AoLab/vim-avro', {'as': 'vim-avro-avsc'}          "only avsc support
 Plug 'GEverding/vim-hocon'
 Plug 'neo4j-contrib/cypher-vim-syntax'
-Plug 'valloric/youcompleteme'
 
 " javascript/json
 Plug 'mustache/vim-mustache-handlebars'
