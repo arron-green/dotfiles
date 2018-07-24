@@ -33,7 +33,7 @@ Plug 'airblade/vim-gitgutter'
 
 " colors
 Plug 'altercation/vim-colors-solarized'
-Plug 'lifepillar/vim-solarized8'
+" Plug 'lifepillar/vim-solarized8'
 Plug 'ajh17/Spacegray.vim'
 
 " jvm
