@@ -32,8 +32,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 " colors
-Plug 'altercation/vim-colors-solarized'
-" Plug 'lifepillar/vim-solarized8'
+Plug 'lifepillar/vim-solarized8'
 Plug 'ajh17/Spacegray.vim'
 
 " jvm
@@ -174,11 +173,10 @@ let g:solarized_termtrans = 1
 
 set background=dark
 try
-    " colorscheme solarized
-    " colorscheme solarized8_dark
-    " colorscheme solarized8_dark_low
-    colorscheme solarized8_dark_high
-    " colorscheme solarized8_dark_flat
+    " colorscheme solarized8
+    " colorscheme solarized8_low
+    " colorscheme solarized8_flat
+    colorscheme solarized8_high
 catch /^Vim\%((\a\+)\)\=:E185/
     colorscheme desert
 endtry
