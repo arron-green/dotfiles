@@ -16,6 +16,7 @@ export COLOR_RED='\[\033[31m\]'
 export COLOR_GREEN='\[\033[32m\]'
 export COLOR_BLUE='\[\033[34m\]'
 export COLOR_CYAN='\[\033[36m\]'
+export EDITOR=$(command -v vim)
 
 function echo-err() {
     printf "%s\n" "$*" >&2;
@@ -314,6 +315,10 @@ fi
 
 export PATH="$HOME/.bin:/usr/local/sbin:$PATH"
 
+if [[ -d $HOME/.local ]]; then
+    export PATH="$PATH:$HOME/.local/bin"
+fi
+
 if [[ -d $HOME/.conscript ]]; then
     export CONSCRIPT_HOME="$HOME/.conscript"
     export PATH="$PATH:$HOME/.conscript/bin"
@@ -322,7 +327,8 @@ fi
 export OPENSSL_HOME="${BREW_PREFIX}/opt/openssl"
 export PATH="$OPENSSL_HOME/bin:$PATH"
 
-export CONFLUENT_VERSION="4.1.0"
+export CONFLUENT_VERSION="4.1.1"
+# export CONFLUENT_VERSION="4.1.0"
 export CONFLUENT_SCALA_VERSION="2.11"
 export CONFLUENT_HOME="/usr/local/confluent-${CONFLUENT_VERSION}"
 if [[ -d ${CONFLUENT_HOME}/bin ]]; then
@@ -337,9 +343,12 @@ function confluent-install {
         CONFLUENT_ZIP="confluent-oss-${CONFLUENT_VERSION}-${CONFLUENT_SCALA_VERSION}.zip"
         CONFLUENT_TMP="/tmp/${CONFLUENT_ZIP}"
         CONFLUENT_DL="http://packages.confluent.io/archive/${CONFLUENT_VERSION%.*}/${CONFLUENT_ZIP}"
-        curl -L -o "${CONFLUENT_TMP}" "${CONFLUENT_DL}"
+        if [[ ! -f "${CONFLUENT_TMP}" ]]; then
+            curl -L -o "${CONFLUENT_TMP}" "${CONFLUENT_DL}"
+        fi
+
         unzip "${CONFLUENT_TMP}" -d /tmp
-        sudo mv "/tmp/confluent-${CONFLUENT_VERSION%.*}" "/usr/local/"
+        sudo mv "/tmp/confluent-${CONFLUENT_VERSION}" "/usr/local/"
     fi
 }
 
