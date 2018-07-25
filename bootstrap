@@ -42,3 +42,6 @@ done < <(find $REPO_PATH/bin -type f -maxdepth 1 -mindepth 1)
 
 # ensure vim plugin deps are installed
 vim +PlugInstall +qall
+vim +PlugClean! +qall
+vim +PlugUpdate +qall
+vim +PlugUpgrade +qall
