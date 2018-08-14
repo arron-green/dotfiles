@@ -178,6 +178,11 @@ function docker-image-grep {
   fi
 }
 
+function docker-ps-image {
+    IMAGE=$1
+    [[ -z "${IMAGE}" ]] || docker ps --filter=ancestor=$@
+}
+
 function epoch-to-human {
   EPOCH="$1"
   if [ ! -z $EPOCH ]; then
