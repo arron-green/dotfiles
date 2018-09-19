@@ -369,7 +369,10 @@ function mk-kafka-topic-compact {
             --topic "${TOPIC}" \
             --replication-factor 1 \
             --partitions 1 \
-            --config cleanup.policy=compact
+            --config cleanup.policy=compact \
+            --config min.cleanable.dirty.ratio=0.01 \
+            --config segment.ms=100 \
+            --config delete.retention.ms=100
     else
         echo "usage: ${0} [topic]"
         return 1
