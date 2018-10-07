@@ -510,6 +510,10 @@ if [[ -f $HOME/.secrets/exports ]]; then
     source $HOME/.secrets/exports
 fi
 
+if [[ -d ${BREW_PREFIX}/opt/mysql-client/bin ]]; then
+    export PATH="${BREW_PREFIX}/opt/mysql-client/bin:$PATH"
+fi
+
 # ruby rbenv specific
 if type -p rbenv > /dev/null 2>&1; then
     export PATH="${BREW_PREFIX}/opt/rbenv/bin:$PATH"
