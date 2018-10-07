@@ -131,6 +131,10 @@ function minikube-dns {
   sudo route -n add 10.0.0.0/24 $(minikube ip)
 }
 
+function kube-dashboard {
+    kubectl apply -f "https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml"
+}
+
 # Docker specific
 function docker-init {
   NAME="$1"
@@ -482,6 +486,7 @@ function http-python {
     esac
 }
 
+alias "kctl"="kubectl"
 alias "ip-addr"="ipconfig getifaddr en0"
 alias "docker-rm-dangling"='docker rmi -f $(docker images -q --filter "dangling=true")'
 alias "certs-show-csr"='openssl req -noout -text -in '
