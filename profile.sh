@@ -494,6 +494,13 @@ alias stripcolors='gsed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g"'
 
 alias ic='cd ~/Library/Mobile\ Documents/com~apple~CloudDocs'
 
+# 1password cli access
+function 1password-cli {
+    if [[ -f $HOME/.oprc ]]; then
+        source $HOME/.oprc
+    fi
+}
+
 if [[ -f $HOME/.secrets/exports ]]; then
     source $HOME/.secrets/exports
 fi
