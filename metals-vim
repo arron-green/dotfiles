@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+source ./common
+
+COURSIER_BIN=${MY_BIN}/coursier
+METALS_VIM_BIN=${MY_BIN}/metals-vim
+METALS_VERSION="2.12:0.4.4"
+
+[[ -e ${COURSIER_BIN} ]] || curl --silent -L -o ${COURSIER_BIN} https://git.io/coursier
+[[ -e ${COURSIER_BIN} ]] && [[ -x ${COURSIER_BIN} ]] || chmod +x ${COURSIER_BIN}
+
+coursier bootstrap \
+    --java-opt -XX:+UseG1GC \
+    --java-opt -XX:+UseStringDeduplication  \
+    --java-opt -Xss4m \
+    --java-opt -Xms100m \
+    --java-opt -Dmetals.client=vim-lsc \
+    org.scalameta:metals_${METALS_VERSION} \
+    -r bintray:scalacenter/releases \
+    -r sonatype:snapshots \
+    -o ${METALS_VIM_BIN} -f

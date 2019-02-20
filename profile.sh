@@ -317,6 +317,7 @@ function ack-json-log {
 export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 export GRADLE_HOME="${BREW_PREFIX}/opt/gradle"
 
+export SBT_OPTS="-XX:MaxMetaspaceSize=512m -Xms2048m -Xmx2048m"
 # default to scala 2.11
 BREW_SCALA_HOME="${BREW_PREFIX}/opt/scala@2.11"
 if [[ -d "${BREW_SCALA_HOME}/bin" ]]; then

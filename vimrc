@@ -38,11 +38,29 @@ Plug 'ajh17/Spacegray.vim'
 " jvm
 Plug 'vim-scripts/log4j.vim'
 Plug 'tfnico/vim-gradle'
-Plug 'derekwyatt/vim-scala'
 Plug 'gurpreetatwal/vim-avro', {'as': 'vim-avro-avdl'}  "only avdl support
 Plug 'AoLab/vim-avro', {'as': 'vim-avro-avsc'}          "only avsc support
 Plug 'GEverding/vim-hocon'
 Plug 'neo4j-contrib/cypher-vim-syntax'
+
+" scala/metals support
+Plug 'derekwyatt/vim-scala'
+Plug 'natebosch/vim-lsc'
+
+" Configuration for vim-scala
+au BufRead,BufNewFile *.sbt set filetype=scala
+
+" Configuration for vim-lsc
+let g:lsc_enable_autocomplete = v:false
+let g:lsc_server_commands = {
+  \  'scala': {
+  \    'command': 'metals-vim',
+  \    'log_level': 'Log'
+  \  }
+  \}
+let g:lsc_auto_map = {
+  \  'GoToDefinition': 'gd',
+  \}
 
 " javascript/json
 Plug 'mustache/vim-mustache-handlebars'
