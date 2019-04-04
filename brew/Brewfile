@@ -1,9 +1,6 @@
 cask_args appdir: '/Applications'
 tap 'caskroom/cask'
 tap 'caskroom/versions'
-tap 'homebrew/science' # opencv
-tap 'homebrew/dupes'
-tap 'homebrew/php'
 
 # essentials
 cask 'iterm2'
@@ -23,7 +20,7 @@ cask 'spotify'
 cask 'private-internet-access'
 cask 'mpv'
 brew 'syncthing'
-brew 'curl', args: ["with-nghttp2"]
+brew 'curl'
 
 # languages
 cask 'java8'
@@ -51,7 +48,6 @@ cask 'kitematic'
 mas 'Xcode', id: 497799835
 brew 'vim'
 brew 'macvim'
-brew 'heroku-toolbelt'
 brew 'kubernetes-cli'
 brew 'kubectx'
 
@@ -110,6 +106,7 @@ brew 'freetype'
 brew 'gawk'
 brew 'gcc'
 brew 'gdbm'
+brew 'gettext'
 brew 'glib'
 brew 'gmp'
 brew 'gnu-getopt'
@@ -161,16 +158,11 @@ brew 'x264'
 brew 'xvid'
 brew 'xz'
 brew 'yasm'
-
-# ARM build tools
-brew 'crosstool-ng'
-brew 'gettext'
+brew 'zlib'
 
 # Services
 brew 'mysql'
-brew 'redis@2.8'
 brew 'postgresql'
-brew 'neo4j'
 
 # Other
 brew 'certbot'
