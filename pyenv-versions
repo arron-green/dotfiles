@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-for python_version in 2.7.14 3.6.5; do
+for python_version in 2.7.12 2.7.14 3.6.5; do
     pyenv install -s $python_version
 done
