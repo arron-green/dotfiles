@@ -527,3 +527,7 @@ if type -p pyenv > /dev/null 2>&1; then
     eval "$(pyenv init -)"
     type -p pyenv-virtualenv-init > /dev/null 2>&1 && eval "$(pyenv virtualenv-init -)"
 fi
+
+# direnv
+eval "$(direnv hook bash)"
+
