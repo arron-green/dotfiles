@@ -42,6 +42,7 @@ brew 'php71'
 brew 'composer'
 
 # development tools
+cask 'visual-studio-code'
 cask 'intellij-idea-ce'
 cask 'sublime-text'
 cask 'atom'
@@ -51,7 +52,10 @@ mas 'Xcode', id: 497799835
 brew 'vim'
 brew 'macvim'
 brew 'kubernetes-cli'
+brew 'kubernetes-helm'
+brew 'vault'
 brew 'kubectx'
+brew 'aws-iam-authenticator'
 
 # build tools
 brew 'sbt'
