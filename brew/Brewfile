@@ -24,6 +24,7 @@ cask 'private-internet-access'
 cask 'mpv'
 brew 'syncthing'
 brew 'curl'
+brew 'nghttp2'
 
 # languages
 cask 'java8'
@@ -53,9 +54,11 @@ brew 'vim'
 brew 'macvim'
 brew 'kubernetes-cli'
 brew 'kubernetes-helm'
+brew 'helmfile'
 brew 'vault'
 brew 'kubectx'
 brew 'aws-iam-authenticator'
+brew 'terraform'
 
 # build tools
 brew 'sbt'
@@ -81,8 +84,10 @@ brew 'wrk'
 brew 'asciinema'
 brew 'youtube-dl'
 brew 'ossp-uuid'
+brew 'toxiproxy'
 
 # etc
+brew 'telnet'
 brew 'hopenpgp-tools'
 brew 'ykman'
 brew 'pinentry-mac'
@@ -96,9 +101,11 @@ mas 'yubikey-personalization-tool', id: 638161122
 mas 'amphetamine', id: 937984704
 mas 'noteability', id: 736189492
 
+brew 'msgpack'
 brew 'ack'
 brew 'ripgrep'
 brew 'autoconf'
+brew 'make'
 brew 'automake'
 brew 'awscli'
 brew 'boost'
