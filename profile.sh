@@ -357,9 +357,9 @@ function confluent-install {
         CONFLUENT_TMP="/tmp/${CONFLUENT_ZIP}"
         CONFLUENT_DL="https://packages.confluent.io/archive/${CONFLUENT_VERSION%.*}/${CONFLUENT_ZIP}"
         echo "${CONFLUENT_DL}"
-        curl -L -o "${CONFLUENT_TMP}" -C - "${CONFLUENT_DL}" \
-            && unzip "${CONFLUENT_TMP}" -d /tmp \
-            && sudo mv "/tmp/confluent-${CONFLUENT_VERSION}" "/usr/local/"
+        # curl -L -o "${CONFLUENT_TMP}" -C - "${CONFLUENT_DL}" \
+        #     && unzip "${CONFLUENT_TMP}" -d /tmp \
+        #     && sudo mv "/tmp/confluent-${CONFLUENT_VERSION}" "/usr/local/"
     # fi
 }
 
