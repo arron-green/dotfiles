@@ -27,7 +27,8 @@ brew 'curl'
 brew 'nghttp2'
 
 # languages
-cask 'java8'
+cask 'java'
+cask 'adoptopenjdk8'
 brew 'scala@2.11'
 brew 'pyenv'
 brew 'pyenv-virtualenv'
