@@ -1,6 +1,7 @@
 cask_args appdir: '/Applications'
 tap 'caskroom/cask'
 tap 'caskroom/versions'
+tap 'shopify/shopify'
 
 # essentials
 cask 'iterm2'
@@ -27,8 +28,10 @@ brew 'curl'
 brew 'nghttp2'
 
 # languages
-cask 'java'
-cask 'adoptopenjdk8'
+# cask 'java'
+# cask 'adoptopenjdk8'
+# https://github.com/graalvm/homebrew-tap
+cask 'graalvm/tap/graalvm-ce'
 brew 'scala'
 brew 'pyenv'
 brew 'pyenv-virtualenv'
@@ -43,13 +46,13 @@ brew 'rbenv'
 brew 'idris'
 brew 'php71'
 brew 'composer'
+brew 'dhall-json'
 
 # development tools
 cask 'visual-studio-code'
 cask 'intellij-idea-ce'
 cask 'sublime-text'
 cask 'docker'
-cask 'kitematic'
 mas 'Xcode', id: 497799835
 brew 'vim'
 brew 'macvim'
@@ -80,7 +83,6 @@ brew 'apache-zeppelin'
 # utilities
 cask 'dropbox'
 cask 'diffmerge'
-cask 'screenhero'
 brew 'wrk'
 brew 'asciinema'
 brew 'youtube-dl'

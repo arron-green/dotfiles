@@ -314,7 +314,8 @@ function ack-json-log {
     ack '^<\d+>\d+-\d+-\d+T\d+:\d+:\d+Z\s[\w-]+\s[\w\(\)\[\]-]+:\s(?<json>\{.+\})$' --output '$+{json}' $@
 }
 
-export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+# export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-19.2.1/Contents/Home"
 export GRADLE_HOME="${BREW_PREFIX}/opt/gradle"
 
 export SBT_OPTS="-XX:MaxMetaspaceSize=512m -Xms2048m -Xmx2048m"
@@ -327,8 +328,9 @@ fi
 
 export PATH="$HOME/.bin:/usr/local/sbin:$PATH"
 
-if [[ -d $HOME/.local ]]; then
-    export PATH="$PATH:$HOME/.local/bin"
+export LOCAL_BIN_HOME="${HOME}/.local/bin"
+if [[ -d ${LOCAL_BIN_HOME} ]]; then
+    export PATH="$PATH:${LOCAL_BIN_HOME}"
 fi
 
 if [[ -d $HOME/.conscript ]]; then
@@ -339,9 +341,8 @@ fi
 export OPENSSL_HOME="${BREW_PREFIX}/opt/openssl"
 export PATH="$OPENSSL_HOME/bin:$PATH"
 
-export CONFLUENT_VERSION="5.2.0"
-# export CONFLUENT_VERSION="4.1.1"
-# export CONFLUENT_VERSION="4.1.0"
+
+export CONFLUENT_VERSION="5.3.1"
 export CONFLUENT_SCALA_VERSION="2.12"
 export CONFLUENT_HOME="/usr/local/confluent-${CONFLUENT_VERSION}"
 if [[ -d ${CONFLUENT_HOME}/bin ]]; then
@@ -349,18 +350,22 @@ if [[ -d ${CONFLUENT_HOME}/bin ]]; then
 fi
 
 function confluent-install {
-    # if [[ -d $CONFLUENT_HOME ]]; then
-    #     echo "confluent kafka already installed"
-    #     return 0
-    # else
-        CONFLUENT_ZIP="confluent-${CONFLUENT_VERSION}-${CONFLUENT_SCALA_VERSION}.zip"
-        CONFLUENT_TMP="/tmp/${CONFLUENT_ZIP}"
-        CONFLUENT_DL="https://packages.confluent.io/archive/${CONFLUENT_VERSION%.*}/${CONFLUENT_ZIP}"
-        echo "${CONFLUENT_DL}"
-        # curl -L -o "${CONFLUENT_TMP}" -C - "${CONFLUENT_DL}" \
-        #     && unzip "${CONFLUENT_TMP}" -d /tmp \
-        #     && sudo mv "/tmp/confluent-${CONFLUENT_VERSION}" "/usr/local/"
-    # fi
+    CONFLUENT_ZIP="confluent-${CONFLUENT_VERSION}-${CONFLUENT_SCALA_VERSION}.zip"
+    CONFLUENT_TMP="/tmp/${CONFLUENT_ZIP}"
+    CONFLUENT_DL="https://packages.confluent.io/archive/${CONFLUENT_VERSION%.*}/${CONFLUENT_ZIP}"
+    echo "${CONFLUENT_DL}"
+    curl -L -o "${CONFLUENT_TMP}" -C - "${CONFLUENT_DL}" \
+        && unzip "${CONFLUENT_TMP}" -d /tmp \
+        && sudo mv "/tmp/confluent-${CONFLUENT_VERSION}" "/usr/local/"
+    }
+
+function confluent-cli-install {
+    CLI_FILE="confluent_latest_darwin_amd64.tar.gz"
+    CLI_DL_FILE="/tmp/${CLI_FILE}"
+    CLI_URL="https://s3-us-west-2.amazonaws.com/confluent.cloud/confluent-cli/archives/latest/${CLI_FILE}"
+    curl --silent -L -o ${CLI_DL_FILE} -C - ${CLI_URL}
+    tar -C /tmp -xvf ${CLI_DL_FILE}
+    cp /tmp/confluent/confluent ${HOME}/.bin
 }
 
 function mk-kafka-topic-compact {
@@ -402,6 +407,8 @@ fi
 # export PKG_CONFIG_PATH="$OPENSSL_HOME/lib/pkgconfig"
 # export LDFLAGS=
 # export CPPFLAGS=-I/usr/local/opt/readline/include
+export LDFLAGS="-L${BREW_PREFIX}/opt/zlib/lib -L${BREW_PREFIX}/opt/sqlite/lib"
+export CPPFLAGS="-I${BREW_PREFIX}/opt/zlib/include -I${BREW_PREFIX}/opt/sqlite/include"
 
 # NOTE: horrible openssl osx hacks :(
 [[ -L ${BREW_PREFIX}/lib/libcrypto.1.0.0.dylib ]] || ln -s $OPENSSL_HOME/lib/libcrypto.1.0.0.dylib ${BREW_PREFIX}/lib/
@@ -529,3 +536,5 @@ fi
 # direnv
 eval "$(direnv hook bash)"
 
+ulimit -S -n 2049
+export GOPATH=~/dev/go

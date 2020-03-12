@@ -45,7 +45,7 @@ Plug 'neo4j-contrib/cypher-vim-syntax'
 
 " scala/metals support
 Plug 'derekwyatt/vim-scala'
-Plug 'natebosch/vim-lsc'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Configuration for vim-scala
 au BufRead,BufNewFile *.sbt set filetype=scala
@@ -141,6 +141,8 @@ autocmd BufRead,BufNewFile *.yml setlocal tabstop=2
 autocmd BufRead,BufNewFile *.yml setlocal shiftwidth=2
 autocmd BufRead,BufNewFile *.yml setlocal softtabstop=2
 au FileType yaml setl sw=2 sts=2 et
+
+autocmd FileType json syntax match Comment +\/\/.\+$+
 
 set showcmd
 set number
