@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+BREW_NVM_HOME="$(brew --prefix)/opt/nvm"
+if [[ -d ${BREW_NVM_HOME} ]]; then
+    NVM_DIR="${HOME}/.nvm"
+    mkdir -p "${NVM_DIR}"
+    source "${BREW_NVM_HOME}/nvm.sh"
+fi
+
+DEFAULT_VERSION=10.16.0
+for VERSION in 6.11.5 ${DEFAULT_VERSION} 10.18.1; do
+    nvm install ${VERSION}
+done
+nvm alias default ${DEFAULT_VERSION}

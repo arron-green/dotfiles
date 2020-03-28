@@ -521,10 +521,10 @@ if [[ -d ${BREW_PREFIX}/opt/mysql-client/bin ]]; then
 fi
 
 # ruby rbenv specific
-if type -p rbenv > /dev/null 2>&1; then
-    export PATH="${BREW_PREFIX}/opt/rbenv/bin:$PATH"
-    eval "$(rbenv init -)"
-fi
+# if type -p rbenv > /dev/null 2>&1; then
+#     export PATH="${BREW_PREFIX}/opt/rbenv/bin:$PATH"
+#     eval "$(rbenv init -)"
+# fi
 
 # python pyenv specific
 if type -p pyenv > /dev/null 2>&1; then
@@ -537,4 +537,4 @@ fi
 eval "$(direnv hook bash)"
 
 ulimit -S -n 2049
-export GOPATH=~/dev/go
+# export GOPATH=~/dev/go

@@ -6,6 +6,9 @@ source ./common
 sudo xcodebuild -license accept
 xcode-select --install;
 
+# set default shell to bash
+# chsh -s /bin/bash
+
 # bootstrap homebrew
 exists-in-path brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -30,11 +33,18 @@ while read SCRIPT_SRC; do
     fi
 done < <(find $REPO_PATH/bin -type f -maxdepth 1 -mindepth 1)
 
+# profile contains some shims
+# need to do this for pyenv and nvm below
+source $REPO_PATH/profile.sh
+
 # setup python environment
 ./pyenv-versions
 
+# setup node environment
+./nvm-versions
+
 # setup ruby environment
-./rbenv-versions
+# ./rbenv-versions
 
 # setup vim-plug
 [ -d $VIMPLUG_HOME ] || mkdir -p $VIMPLUG_HOME
@@ -45,3 +55,8 @@ vim +PlugInstall +qall
 vim +PlugClean! +qall
 vim +PlugUpdate +qall
 vim +PlugUpgrade +qall
+
+# install vscode extensions
+if [[ -e ${REPO_PATH}/vscode.extensions ]]; then
+    cat ${REPO_PATH}/vscode.extensions | xargs -P4 -I{} code --install-extension {}
+fi
