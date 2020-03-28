@@ -44,8 +44,6 @@ brew 'perl'
 brew 'ruby'
 brew 'rbenv'
 brew 'idris'
-brew 'php71'
-brew 'composer'
 brew 'dhall-json'
 
 # development tools
