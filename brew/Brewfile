@@ -1,6 +1,6 @@
 cask_args appdir: '/Applications'
-tap 'caskroom/cask'
-tap 'caskroom/versions'
+tap 'caskroom/cask-cask'
+tap 'caskroom/cask-versions'
 tap 'shopify/shopify'
 
 # essentials
