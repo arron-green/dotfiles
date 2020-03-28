@@ -1,3 +1,5 @@
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # adds color to my terminal
 export TERM="xterm-256color"
 export COLORTERM="truecolor"
