@@ -316,13 +316,25 @@ function ack-json-log {
     ack '^<\d+>\d+-\d+-\d+T\d+:\d+:\d+Z\s[\w-]+\s[\w\(\)\[\]-]+:\s(?<json>\{.+\})$' --output '$+{json}' $@
 }
 
+
+GRAALVM_VERSION="java8-20.0.0"
+GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-${GRAALVM_VERSION}"
+# On macOS Catalina, you may get a warning that "the developer cannot be
+# verified". This check can be disabled in the "Security & Privacy"
+# preferences pane or by running the following command:
+# xattr -r -d com.apple.quarantine ${GRAALVM_HOME}
+
 # export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-19.2.1/Contents/Home"
+if [[ -e "${GRAALVM_HOME}/Contents/Home" ]]; then
+    export JAVA_HOME="${GRAALVM_HOME}/Contents/Home"
+    export PATH="${JAVA_HOME}/bin:${PATH}"
+fi
+
 export GRADLE_HOME="${BREW_PREFIX}/opt/gradle"
 
 export SBT_OPTS="-XX:MaxMetaspaceSize=512m -Xms2048m -Xmx2048m"
 # default to scala 2.11
-BREW_SCALA_HOME="${BREW_PREFIX}/opt/scala@2.11"
+BREW_SCALA_HOME="${BREW_PREFIX}/opt/scala@2.12"
 if [[ -d "${BREW_SCALA_HOME}/bin" ]]; then
     export PATH="${BREW_SCALA_HOME}/bin:$PATH"
     export SCALA_HOME="$(find-scala-home)"
