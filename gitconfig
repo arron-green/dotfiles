@@ -18,6 +18,7 @@
   setuser-personal = !git config user.name 'Arron Green' && git config user.email 'arrong@gmail.com' && git whoami
   setuser-work = !git config user.name 'Arron Green' && git config user.email 'agreen@jwplayer.com' && git whoami
   whoami = !bash -c 'echo \"$(git config --get user.name) <$(git config --get user.email)>\"'
+  squash = "!f(){ git rebase -i $(git merge-base ${1:-master} $(git rev-parse --abbrev-ref HEAD)); };f"
 
 [merge]
   tool = diffmerge
