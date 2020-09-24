@@ -25,6 +25,7 @@ export EDITOR=$(command -v vim)
 function echo-err() {
     printf "%s\n" "$*" >&2;
 }
+export -f echo-err
 
 function ps1-prompt() {
     # current working directory
@@ -52,6 +53,7 @@ function ps1-prompt() {
     END="${COLOR_GREEN}\$${COLOR_NIL} "
     export PS1="${PS1_PREFIX}${VENV}${GIT} ${END}"
 }
+export -f ps1-prompt
 export PROMPT_COMMAND=ps1-prompt
 BREW_PREFIX=$(brew --prefix)
 
@@ -157,22 +159,24 @@ function docker-init {
 
 function docker-image-grep {
   QUIET=false
+  IMAGE=()
   while [[ $# -gt 0 ]] && [[ ."$1" = .--* ]] ;do
       opt="$1"; shift;
       case "$opt" in
           "--" ) break 2;;
-          "--image" )
-              IMAGE="$1"; shift;;
-          "--image="* )     # alternate format: --first=date
-              IMAGE="${opt#*=}";;
-          "-q" )
-              QUIET=true;;
-          "--quiet" )
-              QUIET=true;;
-          *) echo >&2 "Invalid option: $@";
+          "-q" | "--quiet" )
+              QUIET=true
+              ;;
+          -*)
+              echo >&2 "Invalid option: $@";
               return 1;;
+          *)
+              IMAGE+=("${1}");
+              shift;
+              ;;
       esac
   done
+  IMAGE=$( IFS=$'|'; echo "${IMAGE[*]}" )
 
   JSON=$(docker images --format '{{json .}}' | jq --arg IMAGE $IMAGE -rc 'select(.Repository | test($IMAGE))')
   if [[ "$?" == "0" ]]; then
@@ -317,7 +321,8 @@ function ack-json-log {
 }
 
 
-GRAALVM_VERSION="java8-20.0.0"
+# GRAALVM_VERSION="java8-20.0.0"
+GRAALVM_VERSION="java11-20.0.0"
 GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-${GRAALVM_VERSION}"
 # On macOS Catalina, you may get a warning that "the developer cannot be
 # verified". This check can be disabled in the "Security & Privacy"
@@ -327,7 +332,7 @@ GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-${GRAALVM_VERSION}"
 # export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 if [[ -e "${GRAALVM_HOME}/Contents/Home" ]]; then
     export JAVA_HOME="${GRAALVM_HOME}/Contents/Home"
-    export PATH="${JAVA_HOME}/bin:${PATH}"
+    # export PATH="${JAVA_HOME}/bin:${PATH}"
 fi
 
 export GRADLE_HOME="${BREW_PREFIX}/opt/gradle"
@@ -340,7 +345,8 @@ if [[ -d "${BREW_SCALA_HOME}/bin" ]]; then
     export SCALA_HOME="$(find-scala-home)"
 fi
 
-export PATH="$HOME/.bin:/usr/local/sbin:$PATH"
+export HOME_BIN="${HOME}/.bin"
+export PATH="${HOME_BIN}:/usr/local/sbin:$PATH"
 
 export LOCAL_BIN_HOME="${HOME}/.local/bin"
 if [[ -d ${LOCAL_BIN_HOME} ]]; then
@@ -356,7 +362,7 @@ export OPENSSL_HOME="${BREW_PREFIX}/opt/openssl"
 export PATH="$OPENSSL_HOME/bin:$PATH"
 
 
-export CONFLUENT_VERSION="5.3.1"
+export CONFLUENT_VERSION="5.5.0"
 export CONFLUENT_SCALA_VERSION="2.12"
 export CONFLUENT_HOME="/usr/local/confluent-${CONFLUENT_VERSION}"
 if [[ -d ${CONFLUENT_HOME}/bin ]]; then
@@ -379,7 +385,7 @@ function confluent-cli-install {
     CLI_URL="https://s3-us-west-2.amazonaws.com/confluent.cloud/confluent-cli/archives/latest/${CLI_FILE}"
     curl --silent -L -o ${CLI_DL_FILE} -C - ${CLI_URL}
     tar -C /tmp -xvf ${CLI_DL_FILE}
-    cp /tmp/confluent/confluent ${HOME}/.bin
+    cp /tmp/confluent/confluent ${HOME_BIN}
 }
 
 function mk-kafka-topic-compact {
@@ -408,6 +414,27 @@ function pid-of-port {
         return 1
     else
         lsof -i:${PORT} -t
+    fi
+}
+
+function coursier-update {
+    [[ -d "${HOME_BIN}" ]] || mkdir -p "${HOME_BIN}"
+    curl --silent --fail -Lo ${HOME_BIN}/cs "https://git.io/coursier-cli-macos" \
+        && chmod +x ${HOME_BIN}/cs \
+        && (xattr -d com.apple.quarantine ${HOME_BIN}/cs || true) \
+        && ${HOME_BIN}/cs
+}
+
+function password-env {
+    local ENV_VAR="${1}"
+    if [[ -n "${ENV_VAR}" ]]; then
+        echo -n "Assign password to ${ENV_VAR}: "
+        stty -echo
+        read ${ENV_VAR}
+        stty echo
+        echo
+    else
+        echo-err "Usage: ${0} [env-var]"
     fi
 }
 
@@ -506,6 +533,61 @@ function http-python {
     esac
 }
 
+function kafka-topic-size {
+	local BOOTSTRAP_SERVERS="${1}"
+	local TOPIC="${2}"
+    OUTPUT="$(kafka-log-dirs \
+            --bootstrap-server "${BOOTSTRAP_SERVERS}" \
+            --topic-list "${TOPIC}" \
+            --describe | egrep '^{' \
+            | jq -rc \
+                --arg TOPIC "${TOPIC}" \
+                '{topic: $TOPIC, size: ([ ..|.size? | numbers ] | add)}')"
+    SIZE="$(jq -rc '.size'<<<${OUTPUT})"
+    HR="$(numfmt --to=iec<<<${SIZE})"
+    RESULT="$(jq -rc --arg HR "${HR}" '.+={hr: $HR}'<<<${OUTPUT})"
+    echo-err "${RESULT}"
+    echo "${RESULT}"
+}
+export -f kafka-topic-size
+
+function kafka-topics-report2 {
+	local BOOTSTRAP_SERVERS="${1}"
+	if [[ -z "${BOOTSTRAP_SERVERS}" ]]; then
+		echo-err "usage: $0 [instance-ids]"
+	else
+        REPORT="$(mktemp -t kafka-topics-report)"
+        kafka-topics \
+            --bootstrap-server "${BOOTSTRAP_SERVERS}" \
+            --list \
+            | xargs -n 1 -P8 -I {} bash -c "$(printf 'kafka-topic-size "%s" $@' ${BOOTSTRAP_SERVERS})" _ {} > ${REPORT}
+        jq --slurp -rc 'sort_by(.size * -1) | .[]' ${REPORT}
+    fi
+}
+
+function kafka-topics-report {
+	local BOOTSTRAP_SERVERS="${1}"
+	if [[ -z "${BOOTSTRAP_SERVERS}" ]]; then
+		echo-err "usage: $0 [instance-ids]"
+	else
+        TOPICS="$(mktemp -t kafka-topics)"
+        REPORT="$(mktemp -t kafka-topics-report)"
+        kafka-topics --bootstrap-server "${BOOTSTRAP_SERVERS}" --list > "${TOPICS}"
+		while read TOPIC; do
+		   OUTPUT="$(kafka-log-dirs \
+				 --bootstrap-server "${BOOTSTRAP_SERVERS}" \
+				 --topic-list "${TOPIC}" \
+				 --describe | egrep '^{' \
+					| jq -rc \
+						--arg TOPIC "${TOPIC}" \
+						'{topic: $TOPIC, size: ([ ..|.size? | numbers ] | add)}')"
+		   SIZE="$(jq -rc '.size'<<<${OUTPUT})"
+		   HR="$(numfmt --to=iec<<<${SIZE})"
+		   jq -rc --arg HR "${HR}" '.+={hr: $HR}'<<<${OUTPUT}
+		done < <(kafka-topics --bootstrap-server "${BOOTSTRAP_SERVERS}" --list) | jq --slurp -rc 'sort_by(.size * -1) | .[]'
+    fi
+}
+
 alias "kctl"="kubectl"
 alias "ip-addr"="ipconfig getifaddr en0"
 alias "docker-rm-dangling"='docker rmi -f $(docker images -q --filter "dangling=true")'
@@ -551,4 +633,4 @@ fi
 eval "$(direnv hook bash)"
 
 ulimit -S -n 2049
-# export GOPATH=~/dev/go
+export GOPATH=~/dev/go
