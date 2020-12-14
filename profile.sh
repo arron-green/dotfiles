@@ -539,52 +539,29 @@ function kafka-topic-size {
     OUTPUT="$(kafka-log-dirs \
             --bootstrap-server "${BOOTSTRAP_SERVERS}" \
             --topic-list "${TOPIC}" \
-            --describe | egrep '^{' \
+            --describe | grep -E '^{' \
             | jq -rc \
                 --arg TOPIC "${TOPIC}" \
                 '{topic: $TOPIC, size: ([ ..|.size? | numbers ] | add)}')"
-    SIZE="$(jq -rc '.size'<<<${OUTPUT})"
-    HR="$(numfmt --to=iec<<<${SIZE})"
-    RESULT="$(jq -rc --arg HR "${HR}" '.+={hr: $HR}'<<<${OUTPUT})"
+    SIZE="$(jq -rc '.size'<<<"${OUTPUT}")"
+    HR="$(numfmt --to=iec<<<"${SIZE}")"
+    RESULT="$(jq -rc --arg HR "${HR}" '.+={hr: $HR}'<<<"${OUTPUT}")"
     echo-err "${RESULT}"
     echo "${RESULT}"
 }
 export -f kafka-topic-size
 
-function kafka-topics-report2 {
+function kafka-topics-report {
 	local BOOTSTRAP_SERVERS="${1}"
 	if [[ -z "${BOOTSTRAP_SERVERS}" ]]; then
-		echo-err "usage: $0 [instance-ids]"
+		echo-err "usage: $0 [bootstrap-server]"
 	else
         REPORT="$(mktemp -t kafka-topics-report)"
         kafka-topics \
             --bootstrap-server "${BOOTSTRAP_SERVERS}" \
             --list \
-            | xargs -n 1 -P8 -I {} bash -c "$(printf 'kafka-topic-size "%s" $@' ${BOOTSTRAP_SERVERS})" _ {} > ${REPORT}
-        jq --slurp -rc 'sort_by(.size * -1) | .[]' ${REPORT}
-    fi
-}
-
-function kafka-topics-report {
-	local BOOTSTRAP_SERVERS="${1}"
-	if [[ -z "${BOOTSTRAP_SERVERS}" ]]; then
-		echo-err "usage: $0 [instance-ids]"
-	else
-        TOPICS="$(mktemp -t kafka-topics)"
-        REPORT="$(mktemp -t kafka-topics-report)"
-        kafka-topics --bootstrap-server "${BOOTSTRAP_SERVERS}" --list > "${TOPICS}"
-		while read TOPIC; do
-		   OUTPUT="$(kafka-log-dirs \
-				 --bootstrap-server "${BOOTSTRAP_SERVERS}" \
-				 --topic-list "${TOPIC}" \
-				 --describe | egrep '^{' \
-					| jq -rc \
-						--arg TOPIC "${TOPIC}" \
-						'{topic: $TOPIC, size: ([ ..|.size? | numbers ] | add)}')"
-		   SIZE="$(jq -rc '.size'<<<${OUTPUT})"
-		   HR="$(numfmt --to=iec<<<${SIZE})"
-		   jq -rc --arg HR "${HR}" '.+={hr: $HR}'<<<${OUTPUT}
-		done < <(kafka-topics --bootstrap-server "${BOOTSTRAP_SERVERS}" --list) | jq --slurp -rc 'sort_by(.size * -1) | .[]'
+            | xargs -n 1 -P8 -I {} bash -c "$(printf 'kafka-topic-size "%s" $@' "${BOOTSTRAP_SERVERS}")" _ {} > "${REPORT}"
+        jq --slurp -rc 'sort_by(.size * -1) | .[]' "${REPORT}"
     fi
 }
 
