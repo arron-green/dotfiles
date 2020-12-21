@@ -46,6 +46,7 @@ brew 'ruby'
 brew 'rbenv'
 brew 'idris'
 brew 'dhall-json'
+brew 'go-jsonnet'
 
 # development tools
 cask 'visual-studio-code'
