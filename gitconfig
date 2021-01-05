@@ -20,6 +20,7 @@
   whoami = !bash -c 'echo \"$(git config --get user.name) <$(git config --get user.email)>\"'
   squash = "!f(){ git rebase -i $(git merge-base ${1:-master} $(git rev-parse --abbrev-ref HEAD)); };f"
   rm-merged = !git branch --merged | egrep -v '(^\\*|master|dev)' | xargs -I{} git branch -d {}
+  git = !exec git
 
 [merge]
   tool = diffmerge
