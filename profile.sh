@@ -321,8 +321,8 @@ function ack-json-log {
 }
 
 
-# GRAALVM_VERSION="java8-20.0.0"
-GRAALVM_VERSION="java11-20.0.0"
+GRAALVM_VERSION="java8-20.0.0"
+# GRAALVM_VERSION="java11-20.0.0"
 GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-${GRAALVM_VERSION}"
 # On macOS Catalina, you may get a warning that "the developer cannot be
 # verified". This check can be disabled in the "Security & Privacy"
