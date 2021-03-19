@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 source ./common
 
-[ -d $DEV_HOME ] || mkdir -p $DEV_HOME
+[ -d "${DEV_HOME}" ] || mkdir -p "${DEV_HOME}"
 
 sudo xcodebuild -license accept
 xcode-select --install;
@@ -14,28 +14,28 @@ exists-in-path brew || /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercont
 
 # install homebrew deps
 brew update
-brew bundle --file=${REPO_PATH}/brew/Brewfile
+brew bundle --file="${REPO_PATH}/brew/Brewfile"
 
 # setup environment links
-symlink-src-to-target "$REPO_PATH/vimrc" "$HOME/.vimrc"
-symlink-src-to-target "$REPO_PATH/bash_profile" "$HOME/.bash_profile"
-symlink-src-to-target "$REPO_PATH/profile.sh" "$HOME/.profile"
-symlink-src-to-target "$REPO_PATH/gitconfig" "$HOME/.gitconfig"
-symlink-src-to-target "$REPO_PATH/gitignore" "$HOME/.gitignore"
+symlink-src-to-target "${REPO_PATH}/vimrc" "${HOME}/.vimrc"
+symlink-src-to-target "${REPO_PATH}/bash_profile" "${HOME}/.bash_profile"
+symlink-src-to-target "${REPO_PATH}/profile.sh" "${HOME}/.profile"
+symlink-src-to-target "${REPO_PATH}/gitconfig" "${HOME}/.gitconfig"
+symlink-src-to-target "${REPO_PATH}/gitignore" "${HOME}/.gitignore"
 
 # link bin files
-[ -d $MY_BIN ] || mkdir $MY_BIN
-while read SCRIPT_SRC; do
-    if [[ -x $SCRIPT_SRC ]]; then
-        symlink-src-to-target "$SCRIPT_SRC" "${MY_BIN}/$(basename $SCRIPT_SRC)"
+[ -d "${MY_BIN}" ] || mkdir "${MY_BIN}"
+while read -r SCRIPT_SRC; do
+    if [[ -x ${SCRIPT_SRC} ]]; then
+        symlink-src-to-target "${SCRIPT_SRC}" "${MY_BIN}/$(basename "${SCRIPT_SRC}")"
     else
         echo-err "Did not link ${SCRIPT_SRC} because it's not marked as executable"
     fi
-done < <(find $REPO_PATH/bin -type f -maxdepth 1 -mindepth 1)
+done < <(find "${REPO_PATH}/bin" -type f -maxdepth 1 -mindepth 1)
 
 # profile contains some shims
 # need to do this for pyenv and nvm below
-source $REPO_PATH/profile.sh
+source "${REPO_PATH}/profile.sh"
 
 # setup python environment
 ./pyenv-versions
@@ -47,8 +47,8 @@ source $REPO_PATH/profile.sh
 # ./rbenv-versions
 
 # setup vim-plug
-[ -d $VIMPLUG_HOME ] || mkdir -p $VIMPLUG_HOME
-[ -f $VIMPLUG_HOME/plug.vim ] || curl -Lo $VIMPLUG_HOME/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+[ -d "${VIMPLUG_HOME}" ] || mkdir -p "${VIMPLUG_HOME}"
+[ -f "${VIMPLUG_HOME}/plug.vim" ] || curl -Lo "${VIMPLUG_HOME}/plug.vim" "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 
 # ensure vim plugin deps are installed
 vim +PlugInstall +qall
@@ -58,5 +58,6 @@ vim +PlugUpgrade +qall
 
 # install vscode extensions
 if [[ -e ${REPO_PATH}/vscode.extensions ]]; then
-    cat ${REPO_PATH}/vscode.extensions | xargs -P4 -I{} code --install-extension {}
+    # cat "${REPO_PATH}/vscode.extensions" | xargs -P4 -I{} code --install-extension {}
+    xargs -P4 -I{} code --force --install-extension {} < "${REPO_PATH}/vscode.extensions"
 fi

@@ -16,7 +16,7 @@
   lol = log --graph --decorate --pretty=oneline --abbrev-commit
   lola = log --graph --decorate --pretty=format:\"%C(yellow)%h %C(white)%d%Creset %s %Cblue(%an) %Cred%cr\" --abbrev-commit --all
   setuser-personal = !git config user.name 'Arron Green' && git config user.email 'arrong@gmail.com' && git whoami
-  setuser-work = !git config user.name 'Arron Green' && git config user.email 'agreen@jwplayer.com' && git whoami
+  setuser-work = !git config user.name 'Arron Green' && git config user.email 'arron.green@threaststack.com' && git whoami
   whoami = !bash -c 'echo \"$(git config --get user.name) <$(git config --get user.email)>\"'
   squash = "!f(){ git rebase -i $(git merge-base ${1:-master} $(git rev-parse --abbrev-ref HEAD)); };f"
   rm-merged = !git branch --merged | egrep -v '(^\\*|master|dev)' | xargs -I{} git branch -d {}
@@ -44,11 +44,10 @@
 [grep]
   extendRegexp = true
   lineNumber = true
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
     required = true
 
-[url "git@github.com:WeConnect/"]
-	insteadOf = https://github.com/weconnect/
