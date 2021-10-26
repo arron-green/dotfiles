@@ -338,7 +338,7 @@ fi
 
 export GRADLE_HOME="${BREW_PREFIX}/opt/gradle"
 
-export SBT_OPTS="-XX:MaxMetaspaceSize=512m -Xms2048m -Xmx2048m"
+export SBT_OPTS="-XX:MaxMetaspaceSize=512m -Xms512M -Xmx6096M -Xss12M"
 # default to scala 2.11
 BREW_SCALA_HOME="${BREW_PREFIX}/opt/scala@2.12"
 if [[ -d "${BREW_SCALA_HOME}/bin" ]]; then
