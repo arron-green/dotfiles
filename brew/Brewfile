@@ -90,6 +90,8 @@ brew 'ossp-uuid'
 brew 'toxiproxy'
 
 # etc
+brew 'vagrant'
+brew 'virtualbox'
 brew 'telnet'
 brew 'hopenpgp-tools'
 brew 'ykman'
