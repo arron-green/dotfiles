@@ -363,7 +363,8 @@ export OPENSSL_HOME="${BREW_PREFIX}/opt/openssl"
 export PATH="$OPENSSL_HOME/bin:$PATH"
 
 
-export CONFLUENT_VERSION="5.5.0"
+# export CONFLUENT_VERSION="5.5.0"
+export CONFLUENT_VERSION="7.0.0"
 export CONFLUENT_SCALA_VERSION="2.12"
 export CONFLUENT_HOME="/usr/local/confluent-${CONFLUENT_VERSION}"
 if [[ -d ${CONFLUENT_HOME}/bin ]]; then
@@ -371,7 +372,8 @@ if [[ -d ${CONFLUENT_HOME}/bin ]]; then
 fi
 
 function confluent-install {
-    CONFLUENT_ZIP="confluent-${CONFLUENT_VERSION}-${CONFLUENT_SCALA_VERSION}.zip"
+    #CONFLUENT_ZIP="confluent-${CONFLUENT_VERSION}-${CONFLUENT_SCALA_VERSION}.zip"
+    CONFLUENT_ZIP="confluent-community-${CONFLUENT_VERSION}.zip"
     CONFLUENT_TMP="/tmp/${CONFLUENT_ZIP}"
     CONFLUENT_DL="https://packages.confluent.io/archive/${CONFLUENT_VERSION%.*}/${CONFLUENT_ZIP}"
     echo "${CONFLUENT_DL}"
