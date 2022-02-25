@@ -22,6 +22,13 @@ export COLOR_BLUE='\[\033[34m\]'
 export COLOR_CYAN='\[\033[36m\]'
 export EDITOR=$(command -v vim)
 
+if [[ -d /opt/homebrew/bin ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+if [[ -d /opt/homebrew/sbin ]]; then
+    export PATH="/opt/homebrew/sbin:$PATH"
+fi
+
 function echo-err() {
     printf "%s\n" "$*" >&2;
 }
