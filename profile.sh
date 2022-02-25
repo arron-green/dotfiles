@@ -568,6 +568,8 @@ function kafka-topics-report {
     fi
 }
 
+alias 'port-check'='nc -vnzu '
+alias 'port-check-local'='nc -vnzu 127.0.0.1'
 alias "kctl"="kubectl"
 alias "ip-addr"="ipconfig getifaddr en0"
 alias "docker-rm-dangling"='docker rmi -f $(docker images -q --filter "dangling=true")'
