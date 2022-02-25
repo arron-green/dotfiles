@@ -1,3 +1,6 @@
+AleksandarDev.vscode-sequence-diagrams
+bbenoist.Nix
+brettm12345.nixfmt-vscode
 caarlos0.language-prometheus
 casualjim.gotemplate
 christian-kohler.npm-intellisense
@@ -13,6 +16,7 @@ felipecaputo.git-project-manager
 foxundermoon.shell-format
 golang.go
 hashicorp.terraform
+hediet.vscode-drawio
 IgorSbitnev.error-gutters
 jkeys089.plantuml
 jq-syntax-highlighting.jq-syntax-highlighting
@@ -24,10 +28,14 @@ mhutchie.git-graph
 ML.nc-gcode
 ms-azuretools.vscode-docker
 ms-kubernetes-tools.vscode-kubernetes-tools
+ms-mssql.data-workspace-vscode
 ms-mssql.mssql
+ms-mssql.sql-database-projects-vscode
 ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
+ms-toolsai.jupyter-keymap
+ms-toolsai.jupyter-renderers
 ms-vscode-remote.remote-containers
 ms-vscode.cpptools
 ms-vscode.vscode-typescript-tslint-plugin
@@ -39,6 +47,7 @@ panaeon.vscode-dhall-lsp-server
 platformio.platformio-ide
 rakam.rakam-data-modeling
 redhat.java
+redhat.vscode-commons
 redhat.vscode-microprofile
 redhat.vscode-quarkus
 redhat.vscode-yaml
