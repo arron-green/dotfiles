@@ -53,6 +53,7 @@ brew 'go-jsonnet'
 # development tools
 cask 'visual-studio-code'
 cask 'intellij-idea-ce'
+cask 'intellij-idea'
 cask 'sublime-text'
 cask 'docker'
 mas 'Xcode', id: 497799835
