@@ -3,6 +3,7 @@ tap 'shopify/shopify'
 tap 'graalvm/homebrew-tap'
 
 # essentials
+cask 'dbeaver-community'
 cask 'adoptopenjdk8'
 cask 'iterm2'
 brew 'git'
