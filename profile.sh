@@ -469,6 +469,11 @@ export CPPFLAGS="-I${BREW_PREFIX}/opt/zlib/include -I${BREW_PREFIX}/opt/sqlite/i
 export OPENSSL_INCLUDE_DIR="$OPENSSL_HOME/include"
 export DEP_OPENSSL_INCLUDE="$OPENSSL_HOME/include"
 
+# RUST SPECIFIC
+if [[ -d ${HOME}/.cargo/bin ]]; then
+    export PATH="${HOME}/.cargo/bin:$PATH"
+fi
+
 # ZEPPELIN SPECIFIC
 if [[ -d $HOME/.zeppelin-conf ]]; then
     export ZEPPELIN_CONF_DIR="$HOME/.zeppelin-conf"
