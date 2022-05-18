@@ -1,0 +1,23 @@
+<templateSet group="circe">
+  <template name="decoder" value="implicit val $RECEIVER_NAME$Decoder: Decoder[$TYPE_NAME$] = deriveDecoder[$TYPE_NAME$]&#10;$END$&#10;" description="Template for circe semi-auto decoder" toReformat="true" toShortenFQNames="true">
+    <variable name="TYPE_NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="RECEIVER_NAME" expression="camelCase(TYPE_NAME)" defaultValue="&quot;decoder&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="SCALA_IMPLICIT_VALUE_CLASS" value="true" />
+    </context>
+  </template>
+  <template name="encoder" value="implicit val $RECEIVER_NAME$Encoder: Encoder[$TYPE_NAME$] = deriveEncoder[$TYPE_NAME$]&#10;$END$&#10;" description="Template for circe semi-auto encoder" toReformat="true" toShortenFQNames="true">
+    <variable name="TYPE_NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="RECEIVER_NAME" expression="camelCase(TYPE_NAME)" defaultValue="&quot;encoder&quot;" alwaysStopAt="true" />
+    <context>
+      <option name="SCALA_IMPLICIT_VALUE_CLASS" value="true" />
+    </context>
+  </template>
+  <template name="serde" value="implicit val $RECEIVER_NAME$Encoder: Encoder[$TYPE_NAME$] = deriveEncoder[$TYPE_NAME$]&#10;implicit val $RECEIVER_NAME$Decoder: Decoder[$TYPE_NAME$] = deriveDecoder[$TYPE_NAME$]&#10;$END$&#10;" description="Template for circe semi-auto encoder/decoder" toReformat="true" toShortenFQNames="true">
+    <variable name="TYPE_NAME" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="RECEIVER_NAME" expression="camelCase(TYPE_NAME)" defaultValue="" alwaysStopAt="false" />
+    <context>
+      <option name="SCALA_IMPLICIT_VALUE_CLASS" value="true" />
+    </context>
+  </template>
+</templateSet>
