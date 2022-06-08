@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 export VIMPLUG_HOME=${HOME}/.vim/autoload
 export DEV_HOME=${HOME}/dev
-export REPO_PATH=$(git rev-parse --show-toplevel)
+export REPO_PATH="$(git rev-parse --show-toplevel)"
 export MY_BIN=${HOME}/.bin
 
 function echo-err { echo "$@" 1>&2; }

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+source ./common
+
+#
+# Manages Vim Plugins
+# Installs and Updates vim plugins defined within vimrc file
+#
+
+# setup vim-plug
+[ -d "${VIMPLUG_HOME}" ] || mkdir -p "${VIMPLUG_HOME}"
+[ -f "${VIMPLUG_HOME}/plug.vim" ] || curl -Lo "${VIMPLUG_HOME}/plug.vim" "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+
+# ensure vim plugin deps are installed
+vim +PlugInstall +qall
+vim +PlugClean! +qall
+vim +PlugUpdate +qall
+vim +PlugUpgrade +qall

@@ -18,6 +18,7 @@ brew bundle --file="${REPO_PATH}/brew/Brewfile"
 
 # setup environment links
 symlink-src-to-target "${REPO_PATH}/vimrc" "${HOME}/.vimrc"
+symlink-src-to-target "${REPO_PATH}/ideavimrc" "${HOME}/.ideavimrc"
 symlink-src-to-target "${REPO_PATH}/bash_profile" "${HOME}/.bash_profile"
 symlink-src-to-target "${REPO_PATH}/profile.sh" "${HOME}/.profile"
 symlink-src-to-target "${REPO_PATH}/gitconfig" "${HOME}/.gitconfig"
@@ -46,15 +47,8 @@ source "${REPO_PATH}/profile.sh"
 # setup ruby environment
 # ./rbenv-versions
 
-# setup vim-plug
-[ -d "${VIMPLUG_HOME}" ] || mkdir -p "${VIMPLUG_HOME}"
-[ -f "${VIMPLUG_HOME}/plug.vim" ] || curl -Lo "${VIMPLUG_HOME}/plug.vim" "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-
-# ensure vim plugin deps are installed
-vim +PlugInstall +qall
-vim +PlugClean! +qall
-vim +PlugUpdate +qall
-vim +PlugUpgrade +qall
+# setup vim environment
+./vim-plugins
 
 # install vscode extensions
 if [[ -e ${REPO_PATH}/vscode.extensions ]]; then

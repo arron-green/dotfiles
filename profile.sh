@@ -20,7 +20,8 @@ export COLOR_RED='\[\033[31m\]'
 export COLOR_GREEN='\[\033[32m\]'
 export COLOR_BLUE='\[\033[34m\]'
 export COLOR_CYAN='\[\033[36m\]'
-export EDITOR=$(command -v vim)
+EDITOR="$(command -v vim)"
+export EDITOR
 
 if [[ -d /opt/homebrew/bin ]]; then
     export PATH="/opt/homebrew/bin:$PATH"
@@ -53,7 +54,7 @@ function ps1-prompt() {
 
     # python specific
     VENV=""
-    if [[ ! -z $VIRTUAL_ENV ]]; then
+    if [[ -n $VIRTUAL_ENV ]]; then
         VENV=" [${COLOR_BLUE}${PYENV_VERSION-V}${COLOR_NIL}]"
     fi
 
@@ -76,10 +77,13 @@ type -p aws_completer > /dev/null 2>&1 && complete -C "$(type -p aws_completer)"
 
 # utility functions
 function find-scala-home {
-  local source="`type -p scala`"
+  local source
+  source="$(type -p scala)"
   while [ -h "$source" ] ; do
-    local linked="$(readlink "$source")"
-    local dir="$( cd -P $(dirname "$source") && cd -P $(dirname "$linked") && pwd )"
+    local linked
+    linked="$(readlink "$source")"
+    local dir
+    dir="$( cd -P "$(dirname "$source")" && cd -P "$(dirname "$linked")" && pwd )"
     source="$dir/$(basename "$linked")"
   done
   ( cd -P "$(dirname "$source")/.." && pwd )
@@ -114,15 +118,15 @@ function git-branch {
 }
 
 function git-branch-cp {
-    BN=`git-branch`
+    BN=$(git-branch)
     if [ "$?" == "0" ]; then
         echo "$BN" | tr -d '\n' | pbcopy
     fi
 }
 
 function pip-remove-globals {
-    while read P; do
-        pip uninstall -y $P;
+    while read -r P; do
+        pip uninstall -y "${P}";
     done < <(pip list --format=json | jq -rc '.[] .name' | egrep -v 'pip|setuptools|wheel|six')
 }
 
@@ -139,7 +143,7 @@ function minikube-dns {
   sudo route -n delete 10/24 > /dev/null 2>&1
 
   # Create route
-  sudo route -n add 10.0.0.0/24 $(minikube ip)
+  sudo route -n add 10.0.0.0/24 "$(minikube ip)"
 }
 
 function kube-dashboard {
@@ -151,15 +155,15 @@ function docker-init {
   NAME="$1"
   MEMORY="${2-1024}"
   if [ ! -z $NAME ]; then
-      STATUS=`docker-machine status $NAME`
+      STATUS=$(docker-machine status "$NAME")
       if [ "$?" == "0" ]; then
           if [ "$STATUS" == "Stopped" ]; then
-              docker-machine start $NAME
+              docker-machine start "$NAME"
           fi
       else
           docker-machine create -d virtualbox --virtualbox-disk-size "40000" --virtualbox-memory "$MEMORY" $NAME
       fi
-      docker-machine env $NAME
+      docker-machine env "$NAME"
       # eval "$(docker-machine env $NAME)"
   fi
 }
@@ -175,7 +179,7 @@ function docker-image-grep {
               QUIET=true
               ;;
           -*)
-              echo >&2 "Invalid option: $@";
+              echo >&2 "Invalid option: $*";
               return 1;;
           *)
               IMAGE+=("${1}");
