@@ -1,50 +1,51 @@
 [user]
-  name = Arron Green
+    name = Arron Green
 
 [credential]
-  helper = osxkeychain
-  useHttpPath = true
+    helper = osxkeychain
+    useHttpPath = true
 
 [core]
-  editor = vim
-  excludesfile = ~/.gitignore
+    editor = vim
+    excludesfile = ~/.gitignore
 
 [color]
-  ui = true
+    ui = true
 
 [alias]
-  lol = log --graph --decorate --pretty=oneline --abbrev-commit
-  lola = log --graph --decorate --pretty=format:\"%C(yellow)%h %C(white)%d%Creset %s %Cblue(%an) %Cred%cr\" --abbrev-commit --all
-  setuser-personal = !git config user.name 'Arron Green' && git config user.email 'arrong@gmail.com' && git whoami
-  setuser-work = !git config user.name 'Arron Green' && git config user.email 'arron.green@threaststack.com' && git whoami
-  whoami = !bash -c 'echo \"$(git config --get user.name) <$(git config --get user.email)>\"'
-  squash = "!f(){ git rebase -i $(git merge-base ${1:-master} $(git rev-parse --abbrev-ref HEAD)); };f"
-  rm-merged = !git branch --merged | egrep -v '(^\\*|master|dev)' | xargs -I{} git branch -d {}
-  root = !git rev-parse --show-toplevel
-  git = !exec git
+    lol = log --graph --decorate --pretty=oneline --abbrev-commit
+    lola = log --graph --decorate --pretty=format:\"%C(yellow)%h %C(white)%d%Creset %s %Cblue(%an) %Cred%cr\" --abbrev-commit --all
+    setuser-personal = !git config user.name 'Arron Green' && git config user.email 'arrong@gmail.com' && git whoami
+    setuser-work = !git config user.name 'Arron Green' && git config user.email 'arron.green@threaststack.com' && git whoami
+    whoami = !bash -c 'echo \"$(git config --get user.name) <$(git config --get user.email)>\"'
+    squash = "!f(){ git rebase -i $(git merge-base ${1:-master} $(git rev-parse --abbrev-ref HEAD)); };f"
+    rm-merged = !git branch --merged | egrep -v '(^\\*|master|dev)' | xargs -I{} git branch -d {}
+    root = !git rev-parse --show-toplevel
+    git = !exec git
 
 [merge]
-  tool = diffmerge
+    tool = diffmerge
 
 [mergetool "diffmerge"]
-  cmd = diffmerge --merge\n--result=$MERGED $LOCAL $BASE $REMOTE
-  trustExitCode = true
+    cmd = diffmerge --merge\n--result=$MERGED $LOCAL $BASE $REMOTE
+    trustExitCode = true
 
 [mergetool]
-  keepBackup = false
+    keepBackup = false
 
 [diff]
-  tool = diffmerge
+    tool = diffmerge
+    colorMoved = zebra
 
 [difftool "diffmerge"]
-  cmd = diffmerge $LOCAL $REMOTE
+    cmd = diffmerge $LOCAL $REMOTE
 
 [push]
-  default = simple
+    default = simple
 
 [grep]
-  extendRegexp = true
-  lineNumber = true
+    extendRegexp = true
+    lineNumber = true
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
@@ -53,4 +54,8 @@
     required = true
 
 [init]
-	defaultBranch = main
+    defaultBranch = main
+[fetch]
+	prune = true
+[pull]
+	rebase = true
