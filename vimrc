@@ -46,6 +46,9 @@ Plug 'neo4j-contrib/cypher-vim-syntax'
 Plug 'derekwyatt/vim-scala'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" Nix
+Plug 'LnL7/vim-nix'
+
 " Configuration for vim-scala
 au BufRead,BufNewFile *.sbt set filetype=scala
 
