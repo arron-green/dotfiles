@@ -7,8 +7,8 @@ if [[ -d ${BREW_NVM_HOME} ]]; then
     source "${BREW_NVM_HOME}/nvm.sh"
 fi
 
-DEFAULT_VERSION=10.16.0
-for VERSION in 6.11.5 ${DEFAULT_VERSION} 10.18.1; do
+DEFAULT_VERSION=14.14.0
+for VERSION in 6.11.5 ${DEFAULT_VERSION} 10.16.0 10.18.1; do
     nvm install ${VERSION}
 done
 nvm alias default ${DEFAULT_VERSION}

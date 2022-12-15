@@ -35,34 +35,34 @@ function echo-err() {
 }
 export -f echo-err
 
-function ps1-prompt() {
-    # current working directory
-    PS1_PREFIX="${COLOR_GREEN}\W${COLOR_NIL}"
-
-    # git info
-    export GIT_PS1_SHOWCOLORHINTS=true
-    GIT_PS=$(__git_ps1 "%s")
-    if [[ ! -z $GIT_PS ]]; then
-      if [ "$(is-git-dirty)" == "1" ]; then
-          GIT=" (${COLOR_RED}${GIT_PS}${COLOR_NIL})"
-      else
-          GIT=" (${GIT_PS})"
-      fi
-    else
-      GIT=""
-    fi
-
-    # python specific
-    VENV=""
-    if [[ -n $VIRTUAL_ENV ]]; then
-        VENV=" [${COLOR_BLUE}${PYENV_VERSION-V}${COLOR_NIL}]"
-    fi
-
-    END="${COLOR_GREEN}\$${COLOR_NIL} "
-    export PS1="${PS1_PREFIX}${VENV}${GIT} ${END}"
-}
-export -f ps1-prompt
-export PROMPT_COMMAND=ps1-prompt
+# function ps1-prompt() {
+#     # current working directory
+#     PS1_PREFIX="${COLOR_GREEN}\W${COLOR_NIL}"
+#
+#     # git info
+#     export GIT_PS1_SHOWCOLORHINTS=true
+#     GIT_PS=$(__git_ps1 "%s")
+#     if [[ ! -z $GIT_PS ]]; then
+#       if [ "$(is-git-dirty)" == "1" ]; then
+#           GIT=" (${COLOR_RED}${GIT_PS}${COLOR_NIL})"
+#       else
+#           GIT=" (${GIT_PS})"
+#       fi
+#     else
+#       GIT=""
+#     fi
+#
+#     # python specific
+#     VENV=""
+#     if [[ -n $VIRTUAL_ENV ]]; then
+#         VENV=" [${COLOR_BLUE}${PYENV_VERSION-V}${COLOR_NIL}]"
+#     fi
+#
+#     END="${COLOR_GREEN}\$${COLOR_NIL} "
+#     export PS1="${PS1_PREFIX}${VENV}${GIT} ${END}"
+# }
+#export -f ps1-prompt
+#export PROMPT_COMMAND=ps1-prompt
 BREW_PREFIX=$(brew --prefix)
 
 # bash history overrides
@@ -137,37 +137,11 @@ function notify {
   terminal-notifier -message "$*" -title done -subtitle "$(($end - $start)) seconds"
 }
 
-# Kubernetes specific
-function minikube-dns {
-  # Remove any existing routes
-  sudo route -n delete 10/24 > /dev/null 2>&1
-
-  # Create route
-  sudo route -n add 10.0.0.0/24 "$(minikube ip)"
-}
-
 function kube-dashboard {
     kubectl apply -f "https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml"
 }
 
 # Docker specific
-function docker-init {
-  NAME="$1"
-  MEMORY="${2-1024}"
-  if [ ! -z $NAME ]; then
-      STATUS=$(docker-machine status "$NAME")
-      if [ "$?" == "0" ]; then
-          if [ "$STATUS" == "Stopped" ]; then
-              docker-machine start "$NAME"
-          fi
-      else
-          docker-machine create -d virtualbox --virtualbox-disk-size "40000" --virtualbox-memory "$MEMORY" $NAME
-      fi
-      docker-machine env "$NAME"
-      # eval "$(docker-machine env $NAME)"
-  fi
-}
-
 function docker-image-grep {
   QUIET=false
   IMAGE=()
@@ -210,10 +184,7 @@ function epoch-to-human {
       gdate -d @$EPOCH +'%F %r %Z'
   fi
 }
-function randUuid {
-  # only because a stupid ruby gem is first in my path
-  /usr/local/bin/uuid
-}
+
 
 alias "iso8601-now"="gdate +%Y-%m-%dT%H:%M:%S%z"
 alias "iso8601-now-utc"="gdate -u +%Y-%m-%dT%H:%M:%S%z"
@@ -231,101 +202,6 @@ function aws-profiles {
     fi
 }
 
-function aws-log-groups {
-    aws logs describe-log-groups | jq -r -c '.logGroups[] .logGroupName'
-}
-
-function aws-terminate-instance-by-id {
-  INSTANCE_ID=$1
-  if [ ! -z $INSTANCE_ID ]; then
-    aws ec2 terminate-instances --instance-ids $INSTANCE_ID
-  else
-    echo "usage: $0 [instance-ids]"
-  fi
-}
-
-function aws-reset-password {
-  USERNAME="${1}"
-  read -s -p "Password: " PASS
-  if [ ! -z $PASS ]; then
-      aws iam update-login-profile --user-name $USERNAME --password $PASS
-      if [ "$?" == "0" ]; then
-          echo "Password changed for $USERNAME"
-      else
-          echo "Error\! update-login-profile returned non zero status"
-      fi
-  else
-      echo "Usage: $0 '[password]' '[username]'"
-  fi
-}
-
-function aws-change-password {
-    read -s -p "Old Password: " OLD_PASS
-    echo "Ok... got the old"
-    read -s -p "New Password: " NEW_PASS
-    echo "Ok... got the new"
-    if [[ ! -z $OLD_PASS && ! -z $NEW_PASS ]]; then
-        aws iam change-password --old-password "${OLD_PASS}" --new-password "${NEW_PASS}"
-        if [ "$?" == "0" ]; then
-            echo "Password changed"
-            return 0
-        else
-            echo "ERROR: Non zero result returned. Possible password policy issue?"
-            return 1
-        fi
-    else
-        echo "The old and new password cannot be blank"
-        return 1
-    fi
-}
-
-function aws-cfn-watch-stack {
-    STACK_NAME=${1}
-    REFRESH=${2-1}
-    if [ ! -z $STACK_NAME ]; then
-        WATCH_CMD="aws cloudformation describe-stack-events --stack-name $STACK_NAME | jq -rc '.StackEvents | map(select(. != null)) | .[] | [.Timestamp, .ResourceType, .ResourceStatus, .ResourceStatusReason]'"
-        watch -n$REFRESH $WATCH_CMD
-    else
-        echo "Usage: cfn-watch-stack [STACK-NAME] [REFRESH]"
-    fi
-}
-
-function aws-cfn-outputs {
-    STACK_NAME=${1}
-    if [ ! -z $STACK_NAME ]; then
-        JSON=$(aws cloudformation describe-stacks --stack-name $STACK_NAME)
-        [ $? == 0 ] && echo $JSON | jq -rc '.Stacks[] .Outputs | map({key: .OutputKey, value: .OutputValue}) | from_entries'
-    else
-        echo "Usage: cfn-outputs [STACK-NAME]"
-    fi
-}
-
-function aws-cfn-params {
-    STACK_NAME=${1}
-    if [ ! -z $STACK_NAME ]; then
-        JSON=$(aws cloudformation describe-stacks --stack-name $STACK_NAME)
-        [ $? == 0 ] && echo $JSON | jq -rc '.Stacks[] .Parameters | map({key: .ParameterKey, value: .ParameterValue}) | from_entries'
-    else
-        echo "Usage: cfn-outputs [STACK-NAME]"
-    fi
-}
-
-function aws-disable-mfa {
-    MFA_DEVICES=$(aws iam list-mfa-devices | jq -rc '.MFADevices')
-    MFA_COUNT=$(echo $MFA_DEVICES | jq -rc 'length')
-    if [ $MFA_COUNT -gt 0 ]; then
-        USER_NAME=$(echo $MFA_DEVICES | jq -rc '.[] .UserName')
-        SERIAL_NUM=$(echo $MFA_DEVICES | jq -rc '.[] .SerialNumber')
-        if [ -z $USER_NAME ] && [ -z $SERIAL ]; then
-            aws iam deactivate-mfa-device --user-name "$USER_NAME" --serial-number "$SERIAL_NUM"
-        fi
-    fi
-}
-
-function aws-enable-mfa {
-    USER=${1}
-    SERIAL_NUM=$(aws iam list-virtual-mfa-devices | jq -rc ".VirtualMFADevices | map(select(.SerialNumber | contains(\"$USER\"))) | .[] .SerialNumber")
-}
 
 function ack-json-log {
     ack '^<\d+>\d+-\d+-\d+T\d+:\d+:\d+Z\s[\w-]+\s[\w\(\)\[\]-]+:\s(?<json>\{.+\})$' --output '$+{json}' $@
